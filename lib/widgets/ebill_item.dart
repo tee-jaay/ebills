@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../screens/ebill_details_screen.dart';
 
 class EbillItem extends StatelessWidget {
   const EbillItem({Key? key}) : super(key: key);
@@ -49,7 +50,9 @@ class EbillItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, EbillDetailsScreen.routeName);
+                  },
                   child: Text(
                     'view',
                     style: TextStyle(color: Colors.white),
