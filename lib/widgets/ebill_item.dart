@@ -4,7 +4,18 @@ import '../constants.dart';
 import '../screens/ebill_details_screen.dart';
 
 class EbillItem extends StatelessWidget {
-  const EbillItem({Key? key}) : super(key: key);
+  final String title;
+  final String rate;
+  final String unit;
+  final String amount;
+
+  const EbillItem(
+      {required this.title,
+      required this.rate,
+      required this.unit,
+      required this.amount,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +33,28 @@ class EbillItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Jan ~ Mar 2022',
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  '7.5 tk',
-                  style: TextStyle(
+                  '$rate tk',
+                  style: const TextStyle(
                     fontStyle: FontStyle.italic,
                   ),
                 ),
                 Text(
-                  '458 Unit',
-                  style: TextStyle(
+                  '$unit Unit',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: spaceMedium,
             ),
             Row(
@@ -53,17 +64,17 @@ class EbillItem extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, EbillDetailsScreen.routeName);
                   },
-                  child: Text(
-                    'view',
-                    style: TextStyle(color: Colors.white),
-                  ),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.lightBlue),
                   ),
+                  child: const Text(
+                    'view',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 Text(
-                  '2234',
+                  amount,
                   style: TextStyle(
                     fontSize: 24.0,
                     color: Theme.of(context).primaryColor,

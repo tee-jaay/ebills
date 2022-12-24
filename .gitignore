@@ -45,3 +45,4 @@ app.*.map.json
 
 # Custom
 KEYS-DONT-PUSH.txt
+*.env

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/ebills_list.dart';
@@ -12,8 +13,16 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        actions: [
+          IconButton(
+            onPressed: (){if (kDebugMode) {
+              print('add ebill');
+            }},
+            icon: const Icon(Icons.add, color: Colors.white,),
+          ),
+        ],
       ),
-      body: EbillsList(),
+      body: const EbillsList(),
     );
   }
 }

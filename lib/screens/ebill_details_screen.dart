@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EbillDetailsScreen extends StatelessWidget {
-  static final routeName = "/ebill-details-screen";
+  static const routeName = "/ebill-details-screen";
 
   const EbillDetailsScreen({Key? key}) : super(key: key);
 
@@ -9,11 +9,11 @@ class EbillDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ebill Details'),
+        title: const Text('Ebill Details'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: const [
           Text(
             'Tenant name',
             style: TextStyle(),
