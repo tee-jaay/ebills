@@ -1,15 +1,27 @@
 class EBill {
+  String? name;
+  String? collectorName;
   String? title;
-  String? unit;
+  String? unitNow;
+  String? unitPrev;
   String? rate;
   String? amount;
-  DateTime? date;
+  String? charge;
+  String? due;
+  String? advance;
+  //DateTime? paidDate;
 
   EBill({
+    required this.name,
+    required this.collectorName,
     required this.title,
-    required this.unit,
+    required this.unitNow,
+    required this.unitPrev,
     required this.rate,
     required this.amount,
-    required this.date,
+    required this.charge,
+    required this.due,
+    required this.advance,
+   // required this.paidDate,
   });
 }

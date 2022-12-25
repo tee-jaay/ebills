@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'providers/ebills.dart';
 import 'screens/ebill_details_screen.dart';
-import 'screens/home_screen.dart';
+import 'screens/ebills_list_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: const EbillsListScreen(),
         routes: {
           EbillDetailsScreen.routeName: (ctx) => const EbillDetailsScreen(),
         },

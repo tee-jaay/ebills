@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../widgets/ebills_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class EbillsListScreen extends StatelessWidget {
   static const routeName = '/home';
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const EbillsListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

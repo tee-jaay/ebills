@@ -37,7 +37,7 @@ class EbillsList extends StatelessWidget {
                                   itemBuilder: (_, i) => EbillItem(
                                     title: itemsData.ebills[i].title ?? '',
                                     rate: itemsData.ebills[i].rate ?? '',
-                                    unit: itemsData.ebills[i].unit ?? '',
+                                    unit: itemsData.ebills[i].unitNow ?? '',
                                     amount: itemsData.ebills[i].amount ?? '',
                                   ),
                                 ),

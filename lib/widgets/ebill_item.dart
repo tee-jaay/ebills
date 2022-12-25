@@ -62,7 +62,9 @@ class EbillItem extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, EbillDetailsScreen.routeName);
+                    Navigator.of(context).pushNamed(
+                        EbillDetailsScreen.routeName,
+                        arguments: title);
                   },
                   style: ButtonStyle(
                     backgroundColor:

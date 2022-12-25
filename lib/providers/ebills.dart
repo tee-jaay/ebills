@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+//import 'package:intl/intl.dart';
 
 import '../models/ebill.dart';
 
@@ -26,14 +27,22 @@ class EBills with ChangeNotifier {
       }
 
       final decodedData = jsonDecode(response.body) as List<dynamic>;
+      print(decodedData);
 
       for (var element in decodedData) {
         _ebills.add(EBill(
-            title: element["title"],
-            unit: element["unitNow"].toString(),
-            rate: element["unitRate"].toString(),
-            amount: element["amount"].toString(),
-            date: element["date"]));
+          title: element["title"],
+          unitNow: element["unitNow"].toString(),
+          rate: element["unitRate"].toString(),
+          amount: element["amount"].toString(),
+          name: element["name"].toString(),
+          collectorName: element["collectorName"].toString(),
+          unitPrev: element["unitPrev"].toString(),
+          charge: element["charge"].toString(),
+          due: element["due"].toString(),
+          advance: element["advance"].toString(),
+          // paidDate: DateFormat('yy-MM').format(element["paidDate"]),
+        ));
       }
       // notify the listeners
       notifyListeners();
@@ -53,14 +62,12 @@ class EBills with ChangeNotifier {
   }
 
   // Show single ebill
-  Future<void> showEbill(String id) async {
+  EBill showEbill(String title) {
     if (kDebugMode) {
       print('showEbill');
+      print(title);
     }
-    if (kDebugMode) {
-      print(id);
-    }
-    return;
+    return _ebills.firstWhere((element) => element.title == title);
   }
 
   // Update ebills data
