@@ -35,6 +35,7 @@ class EbillsList extends StatelessWidget {
                                 child: ListView.builder(
                                   itemCount: itemsData.ebills.length,
                                   itemBuilder: (_, i) => EbillItem(
+                                    id: itemsData.ebills[i].id ?? '',
                                     title: itemsData.ebills[i].title ?? '',
                                     rate: itemsData.ebills[i].rate ?? '',
                                     unit: itemsData.ebills[i].unitNow ?? '',

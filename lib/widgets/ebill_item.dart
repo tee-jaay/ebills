@@ -4,18 +4,20 @@ import '../constants.dart';
 import '../screens/ebill_details_screen.dart';
 
 class EbillItem extends StatelessWidget {
+  final String id;
   final String title;
   final String rate;
   final String unit;
   final String amount;
 
-  const EbillItem(
-      {required this.title,
-      required this.rate,
-      required this.unit,
-      required this.amount,
-      Key? key})
-      : super(key: key);
+  const EbillItem({
+    required this.id,
+    required this.title,
+    required this.rate,
+    required this.unit,
+    required this.amount,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class EbillItem extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                         EbillDetailsScreen.routeName,
-                        arguments: title);
+                        arguments: id);
                   },
                   style: ButtonStyle(
                     backgroundColor:

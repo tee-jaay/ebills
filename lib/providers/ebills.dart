@@ -31,6 +31,7 @@ class EBills with ChangeNotifier {
 
       for (var element in decodedData) {
         _ebills.add(EBill(
+          id:element["id"],
           title: element["title"],
           unitNow: element["unitNow"].toString(),
           rate: element["unitRate"].toString(),
@@ -62,12 +63,12 @@ class EBills with ChangeNotifier {
   }
 
   // Show single ebill
-  EBill showEbill(String title) {
+  EBill showEbill(String id) {
     if (kDebugMode) {
       print('showEbill');
-      print(title);
+      print(id);
     }
-    return _ebills.firstWhere((element) => element.title == title);
+    return _ebills.firstWhere((element) => element.id == id);
   }
 
   // Update ebills data

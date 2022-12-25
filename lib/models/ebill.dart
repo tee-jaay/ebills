@@ -1,4 +1,5 @@
 class EBill {
+  String? id;
   String? name;
   String? collectorName;
   String? title;
@@ -12,6 +13,7 @@ class EBill {
   //DateTime? paidDate;
 
   EBill({
+    required this.id,
     required this.name,
     required this.collectorName,
     required this.title,

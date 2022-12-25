@@ -11,9 +11,9 @@ class EbillDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ebillTitle = ModalRoute.of(context)?.settings.arguments as String;
+    final id = ModalRoute.of(context)?.settings.arguments as String;
     final loadedItem =
-        Provider.of<EBills>(context, listen: false).showEbill(ebillTitle);
+        Provider.of<EBills>(context, listen: false).showEbill(id);
 
     return Scaffold(
       appBar: AppBar(
