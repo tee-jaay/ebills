@@ -14,7 +14,7 @@ class EBills with ChangeNotifier {
   Future<void> fetchAndSetAllEbills() async {
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5555')}/ebills');
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5555')}/ebills/index');
 
       final response = await http.get(url);
 
