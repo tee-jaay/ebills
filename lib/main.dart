@@ -20,7 +20,6 @@ void main() async {
 class AppRoot extends StatelessWidget {
   const AppRoot({super.key});
 
-  // the root of application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -36,7 +35,8 @@ class AppRoot extends StatelessWidget {
         // home: const ListScreen(),
         home: const ElectricBillAddScreen(),
         routes: {
-          ElectricBillListScreen.routeName: (ctx) => const ElectricBillListScreen(),
+          ElectricBillListScreen.routeName: (ctx) =>
+              const ElectricBillListScreen(),
           ElectricBillDetailsScreen.routeName: (ctx) =>
               const ElectricBillDetailsScreen(),
           ElectricBillAddScreen.routeName: (ctx) =>
