@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/ebills.dart';
+import 'ebill_edit_screen.dart';
 
 class EbillDetailsScreen extends StatelessWidget {
-  static const routeName = "/ebill-details-screen";
+  static const routeName = "/ebill_details_screen";
 
   const EbillDetailsScreen({Key? key}) : super(key: key);
 
@@ -18,6 +19,17 @@ class EbillDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ebill Details'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(EbillEditScreen.routeName);
+            },
+            icon: const Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,

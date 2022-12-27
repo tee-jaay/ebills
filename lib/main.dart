@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-
 import 'constants.dart';
+
 import 'providers/ebills.dart';
+import 'screens/ebill_create_screen.dart';
 import 'screens/ebill_details_screen.dart';
 import 'screens/ebills_list_screen.dart';
+import 'screens/ebill_edit_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
         home: const EbillsListScreen(),
         routes: {
           EbillDetailsScreen.routeName: (ctx) => const EbillDetailsScreen(),
+          EbillCreateScreen.routeName:(ctx) => const EbillCreateScreen(),
+          EbillEditScreen.routeName:(ctx)=> const EbillEditScreen(),
         },
       ),
     );
