@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/ebills.dart';
+import '../widgets/details_key_value.dart';
 import 'ebill_edit_screen.dart';
 
 class EbillDetailsScreen extends StatelessWidget {
@@ -33,57 +34,47 @@ class EbillDetailsScreen extends StatelessWidget {
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: spaceSmall,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(spaceMedium),
+            child: Column(
+              children: [
+                DetailsKeyValue('Paid For:', loadedItem.title),
+
+                Text('= = = = = = = = = = = ='),
+                DetailsKeyValue('Collector', '${loadedItem.collectorName.toString()}'),
+
+                DetailsKeyValue('Payer:', loadedItem.name.toString()),
+
+                Text('= = = = = = = = = = = ='),
+
+                SizedBox(height: spaceExtraLarge,),
+
+                DetailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
+
+                DetailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
+
+                DetailsKeyValue('Per Unit:', '${loadedItem.rate.toString()} $currency'),
+
+                Text('- - - - - - - - - - - - - -'),
+
+                SizedBox(height: spaceExtraLarge,),
+
+                DetailsKeyValue('Due:', '${loadedItem.due.toString()} $currency'),
+
+                DetailsKeyValue('Advance', '${loadedItem.advance.toString()} $currency'),
+
+                DetailsKeyValue('Charge', '${loadedItem.charge.toString()} $currency'),
+
+                Text('- - - - - - - - - - - - - -'),
+
+                SizedBox(height: spaceExtraLarge,),
+
+                DetailsKeyValue('Amount', '${loadedItem.amount.toString()} $currency'),
+
+              ],
             ),
-            Text(
-              'Paid For: ${loadedItem.title.toString()}',
-              style: TextStyle(fontSize: spaceMax),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: spaceSmall,
-            ),
-            Text(
-              'Payer: ${loadedItem.name.toString()}',
-              style: TextStyle(fontSize: spaceExtraLarge),
-            ),
-            Text(
-              'Unit Now: ${loadedItem.unitNow.toString()}',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Unit Prev: ${loadedItem.unitPrev.toString()}',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Per Unit: ${loadedItem.rate.toString()} $currency',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Due: ${loadedItem.due.toString()} $currency',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Advance: ${loadedItem.advance.toString()} $currency',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Charge: ${loadedItem.charge.toString()} $currency',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Amount: ${loadedItem.amount.toString()} $currency',
-              style: const TextStyle(),
-            ),
-            Text(
-              'Collector: ${loadedItem.collectorName.toString()}',
-              style: const TextStyle(),
-            ),
-          ],
+          ),
         ),
       ),
     );
