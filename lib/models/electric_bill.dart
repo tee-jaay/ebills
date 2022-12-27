@@ -1,4 +1,4 @@
-class EBill {
+class ElectricBill {
   String? id;
   String? name;
   String? collectorName;
@@ -12,7 +12,7 @@ class EBill {
   String? advance;
   //DateTime? paidDate;
 
-  EBill({
+  ElectricBill({
     required this.id,
     required this.name,
     required this.collectorName,

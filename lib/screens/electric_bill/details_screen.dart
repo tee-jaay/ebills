@@ -1,30 +1,30 @@
-import 'package:ebills/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/ebills.dart';
-import '../widgets/details_key_value.dart';
-import '../widgets/divider_line.dart';
-import 'ebill_edit_screen.dart';
+import '../../settings/constants.dart';
+import '../../providers/electric_bills.dart';
+import '../../widgets/details_key_value.dart';
+import '../../widgets/divider_line.dart';
+import 'edit_screen.dart';
 
-class EbillDetailsScreen extends StatelessWidget {
-  static const routeName = "/ebill_details_screen";
+class DetailsScreen extends StatelessWidget {
+  static const routeName = electricBillDetailsScreenRouteName;
 
-  const EbillDetailsScreen({Key? key}) : super(key: key);
+  const DetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments as String;
     final loadedItem =
-        Provider.of<EBills>(context, listen: false).showEbill(id);
+        Provider.of<ElectricBills>(context, listen: false).showElectricBill(id);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ebill Details'),
+        title: const Text(electricBillDetailsScreenTitle),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(EbillEditScreen.routeName);
+              Navigator.of(context).pushNamed(EditScreen.routeName);
             },
             icon: const Icon(
               Icons.edit,
@@ -33,7 +33,7 @@ class EbillDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Card(
           child: Padding(
@@ -43,14 +43,14 @@ class EbillDetailsScreen extends StatelessWidget {
                 DetailsKeyValue('Paid For:', loadedItem.title),
                 DividerLine(spaceMedium, 2.0, Colors.black),
                 DetailsKeyValue(
-                    'Collector', '${loadedItem.collectorName.toString()}'),
+                    'Collector', loadedItem.collectorName.toString()),
                 DetailsKeyValue('Payer:', loadedItem.name.toString()),
                 DividerLine(spaceLarge, 1.0, Colors.black54),
                 DetailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
                 DetailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
                 DetailsKeyValue(
                     'Per Unit:', '${loadedItem.rate.toString()} $currency'),
-                SizedBox(
+                const SizedBox(
                   height: spaceExtraLarge,
                 ),
                 DetailsKeyValue(

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-import '../screens/ebill_details_screen.dart';
+import '../settings/constants.dart';
+import '../screens/electric_bill/details_screen.dart';
 
-class EbillItem extends StatelessWidget {
+class ElectricBillSingle extends StatelessWidget {
   final String id;
   final String title;
   final String rate;
   final String unit;
   final String amount;
 
-  const EbillItem({
+  const ElectricBillSingle({
     required this.id,
     required this.title,
     required this.rate,
@@ -65,7 +65,7 @@ class EbillItem extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(
-                        EbillDetailsScreen.routeName,
+                        DetailsScreen.routeName,
                         arguments: id);
                   },
                   style: ButtonStyle(

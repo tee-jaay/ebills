@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 //import 'package:intl/intl.dart';
 
-import '../models/ebill.dart';
+import '../models/electric_bill.dart';
 
-class EBills with ChangeNotifier {
-  // Declare local class for ebills
-  final List<EBill> _ebills = [];
+class ElectricBills with ChangeNotifier {
+  // Declare local class for electric bills
+  final List<ElectricBill> _electricBills = [];
 
-  // Fetch and set ebills data
-  Future<void> fetchAndSetAllEbills() async {
+  // Fetch and set electric bills data
+  Future<void> fetchAndSetAllElectricBills() async {
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5555')}/ebills/index');
@@ -27,10 +27,12 @@ class EBills with ChangeNotifier {
       }
 
       final decodedData = jsonDecode(response.body) as List<dynamic>;
-      print(decodedData);
+      if (kDebugMode) {
+        print(decodedData);
+      }
 
       for (var element in decodedData) {
-        _ebills.add(EBill(
+        _electricBills.add(ElectricBill(
           id:element["id"],
           title: element["title"],
           unitNow: element["unitNow"].toString(),
@@ -54,27 +56,27 @@ class EBills with ChangeNotifier {
     }
   }
 
-  // Add ebills data
-  Future<void> addEbill() async {
+  // Add electric bill data
+  Future<void> addElectricBill() async {
     if (kDebugMode) {
       print('add an ebill');
     }
     return;
   }
 
-  // Show single ebill
-  EBill showEbill(String id) {
+  // Show single electric bill
+  ElectricBill showElectricBill(String id) {
     if (kDebugMode) {
       print('showEbill');
       print(id);
     }
-    return _ebills.firstWhere((element) => element.id == id);
+    return _electricBills.firstWhere((element) => element.id == id);
   }
 
-  // Update ebills data
-  Future<void> updateEbill(String id) async {
+  // Update electric bill's data
+  Future<void> updateElectricbill(String id) async {
     if (kDebugMode) {
-      print('updateEbill');
+      print('update E bill');
     }
     if (kDebugMode) {
       print(id);
@@ -82,15 +84,15 @@ class EBills with ChangeNotifier {
     return;
   }
 
-  // Delete ebills data
-  Future<void> deleteEbill(String id) async {
+  // Delete electric bill's data
+  Future<void> deleteElectricBill(String id) async {
     if (kDebugMode) {
       print(id);
     }
     return;
   }
 
-  List<EBill> get ebills {
-    return [..._ebills];
+  List<ElectricBill> get electricBills {
+    return [..._electricBills];
   }
 }

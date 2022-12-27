@@ -1,15 +1,15 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-import '../providers/ebills.dart';
-import 'ebill_item.dart';
+import '../settings/constants.dart';
+import '../providers/electric_bills.dart';
+import 'electric_bill_single.dart';
 
-class EbillsList extends StatelessWidget {
-  const EbillsList({Key? key}) : super(key: key);
+class ElectricBillsList extends StatelessWidget {
+  const ElectricBillsList({Key? key}) : super(key: key);
 
   Future<void> _refreshEbills(BuildContext context) async {
-    await Provider.of<EBills>(context, listen: false).fetchAndSetAllEbills();
+    await Provider.of<ElectricBills>(context, listen: false).fetchAndSetAllElectricBills();
   }
 
   @override
@@ -28,18 +28,18 @@ class EbillsList extends StatelessWidget {
                         )
                       : RefreshIndicator(
                           onRefresh: () => _refreshEbills(context),
-                          child: Consumer<EBills>(
+                          child: Consumer<ElectricBills>(
                             builder: (_, itemsData, __) {
                               return Padding(
                                 padding: const EdgeInsets.all(spaceSmall),
                                 child: ListView.builder(
-                                  itemCount: itemsData.ebills.length,
-                                  itemBuilder: (_, i) => EbillItem(
-                                    id: itemsData.ebills[i].id ?? '',
-                                    title: itemsData.ebills[i].title ?? '',
-                                    rate: itemsData.ebills[i].rate ?? '',
-                                    unit: itemsData.ebills[i].unitNow ?? '',
-                                    amount: itemsData.ebills[i].amount ?? '',
+                                  itemCount: itemsData.electricBills.length,
+                                  itemBuilder: (_, i) => ElectricBillSingle(
+                                    id: itemsData.electricBills[i].id ?? '',
+                                    title: itemsData.electricBills[i].title ?? '',
+                                    rate: itemsData.electricBills[i].rate ?? '',
+                                    unit: itemsData.electricBills[i].unitNow ?? '',
+                                    amount: itemsData.electricBills[i].amount ?? '',
                                   ),
                                 ),
                               );

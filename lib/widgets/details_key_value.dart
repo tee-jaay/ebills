@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../settings/constants.dart';
 
 Widget DetailsKeyValue(String? title, String? value) {
   return Padding(
-    padding: EdgeInsets.all(spaceSmall),
+    padding: const EdgeInsets.all(spaceSmall),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: spaceExtraLarge,
             fontWeight: FontWeight.bold,
           ),
@@ -18,7 +18,7 @@ Widget DetailsKeyValue(String? title, String? value) {
         ),
         Text(
           value.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: spaceExtraLarge,
             fontWeight: FontWeight.bold,
           ),
