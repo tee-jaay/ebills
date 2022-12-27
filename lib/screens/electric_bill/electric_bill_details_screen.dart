@@ -5,12 +5,12 @@ import '../../settings/constants.dart';
 import '../../providers/electric_bills.dart';
 import '../../widgets/details_key_value.dart';
 import '../../widgets/divider_line.dart';
-import 'edit_screen.dart';
+import 'electric_bill_edit_screen.dart';
 
-class DetailsScreen extends StatelessWidget {
+class ElectricBillDetailsScreen extends StatelessWidget {
   static const routeName = electricBillDetailsScreenRouteName;
 
-  const DetailsScreen({Key? key}) : super(key: key);
+  const ElectricBillDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class DetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(EditScreen.routeName);
+              Navigator.of(context).pushNamed(ElectricBillEditScreen.routeName);
             },
             icon: const Icon(
               Icons.edit,

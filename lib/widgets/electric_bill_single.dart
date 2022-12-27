@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
-import '../screens/electric_bill/details_screen.dart';
+import '../screens/electric_bill/electric_bill_details_screen.dart';
 
 class ElectricBillSingle extends StatelessWidget {
   final String id;
@@ -47,6 +47,7 @@ class ElectricBillSingle extends StatelessWidget {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
+                //Todo: change to paid unit
                 Text(
                   '$unit Unit',
                   style: const TextStyle(
@@ -65,7 +66,7 @@ class ElectricBillSingle extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(
-                        DetailsScreen.routeName,
+                        ElectricBillDetailsScreen.routeName,
                         arguments: id);
                   },
                   style: ButtonStyle(

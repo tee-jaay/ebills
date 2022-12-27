@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../settings/constants.dart';
-import '../../widgets/electric_bill_create_form.dart';
+import '../../widgets/electric_bill_add_form.dart';
 
-class AddScreen extends StatelessWidget {
+class ElectricBillAddScreen extends StatelessWidget {
   static const routeName = electricBillAddScreenRouteName;
 
-  const AddScreen({Key? key}) : super(key: key);
+  const ElectricBillAddScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AddScreen extends StatelessWidget {
         margin: EdgeInsets.all(spaceSmall),
         child: Padding(
           padding: EdgeInsets.all(spaceSmall),
-          child: ElectricBillCreateForm(),
+          child: ElectricBillAddForm(),
         ),
       ),
     );

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../settings/constants.dart';
 import '../models/electric_bill.dart';
 
-class ElectricBillCreateForm extends StatefulWidget {
-  const ElectricBillCreateForm({Key? key}) : super(key: key);
+class ElectricBillAddForm extends StatefulWidget {
+  const ElectricBillAddForm({Key? key}) : super(key: key);
 
   @override
-  State<ElectricBillCreateForm> createState() => _ElectricBillCreateFormState();
+  State<ElectricBillAddForm> createState() => _ElectricBillAddFormState();
 }
 
-class _ElectricBillCreateFormState extends State<ElectricBillCreateForm> {
+class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
   final _formKey = GlobalKey<FormState>();
 
   var _isInit = true;
