@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/ebills.dart';
 import '../widgets/details_key_value.dart';
+import '../widgets/divider_line.dart';
 import 'ebill_edit_screen.dart';
 
 class EbillDetailsScreen extends StatelessWidget {
@@ -40,38 +41,27 @@ class EbillDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 DetailsKeyValue('Paid For:', loadedItem.title),
-
-                Text('= = = = = = = = = = = ='),
-                DetailsKeyValue('Collector', '${loadedItem.collectorName.toString()}'),
-
+                DividerLine(spaceMedium, 2.0, Colors.black),
+                DetailsKeyValue(
+                    'Collector', '${loadedItem.collectorName.toString()}'),
                 DetailsKeyValue('Payer:', loadedItem.name.toString()),
-
-                Text('= = = = = = = = = = = ='),
-
-                SizedBox(height: spaceExtraLarge,),
-
+                DividerLine(spaceLarge, 1.0, Colors.black54),
                 DetailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
-
                 DetailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
-
-                DetailsKeyValue('Per Unit:', '${loadedItem.rate.toString()} $currency'),
-
-                Text('- - - - - - - - - - - - - -'),
-
-                SizedBox(height: spaceExtraLarge,),
-
-                DetailsKeyValue('Due:', '${loadedItem.due.toString()} $currency'),
-
-                DetailsKeyValue('Advance', '${loadedItem.advance.toString()} $currency'),
-
-                DetailsKeyValue('Charge', '${loadedItem.charge.toString()} $currency'),
-
-                Text('- - - - - - - - - - - - - -'),
-
-                SizedBox(height: spaceExtraLarge,),
-
-                DetailsKeyValue('Amount', '${loadedItem.amount.toString()} $currency'),
-
+                DetailsKeyValue(
+                    'Per Unit:', '${loadedItem.rate.toString()} $currency'),
+                SizedBox(
+                  height: spaceExtraLarge,
+                ),
+                DetailsKeyValue(
+                    'Due:', '${loadedItem.due.toString()} $currency'),
+                DetailsKeyValue(
+                    'Advance', '${loadedItem.advance.toString()} $currency'),
+                DetailsKeyValue(
+                    'Charge', '${loadedItem.charge.toString()} $currency'),
+                DividerLine(spaceMedium, 1.0, Colors.black),
+                DetailsKeyValue(
+                    'Amount', '${loadedItem.amount.toString()} $currency'),
               ],
             ),
           ),
