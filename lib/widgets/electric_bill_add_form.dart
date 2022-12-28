@@ -273,7 +273,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Collector name
                     TextFormField(
                       initialValue: 'Maria Doe',
-                      decoration: const InputDecoration(labelText: 'Amount'),
+                      decoration: const InputDecoration(labelText: 'Collector\'s Name'),
                       focusNode: _collectorNameFocusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
