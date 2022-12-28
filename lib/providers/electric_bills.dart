@@ -13,9 +13,13 @@ class ElectricBills with ChangeNotifier {
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
+    if(_electricBills.isNotEmpty){
+      return;
+    }
+
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5555')}/ebills/index');
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/index');
 
       final response = await http.get(url);
 
@@ -57,19 +61,27 @@ class ElectricBills with ChangeNotifier {
   }
 
   // Add electric bill data
-  Future<void> addElectricBill() async {
-    if (kDebugMode) {
-      print('add an ebill');
+  Future<void> addElectricBill(Object obj) async {
+    print(obj);
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/create');
+
+      final response = await http.post(url,body: jsonEncode({}));
+      print(response);
+      
+      // notify the listeners
+      notifyListeners();
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
     }
     return;
   }
 
   // Show single electric bill
   ElectricBill showElectricBill(String id) {
-    if (kDebugMode) {
-      print('showEbill');
-      print(id);
-    }
     return _electricBills.firstWhere((element) => element.id == id);
   }
 

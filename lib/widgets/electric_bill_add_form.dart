@@ -1,4 +1,7 @@
+import 'package:ebills/models/electric_bill.dart';
+import 'package:ebills/providers/electric_bills.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../settings/constants.dart';
 
@@ -12,19 +15,18 @@ class ElectricBillAddForm extends StatefulWidget {
 class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
   final _formKey = GlobalKey<FormState>();
 
-  var _isInit = true;
-  var _isLoading = false;
+  final _isLoading = false;
 
-  late String _title = '';
-  late String _name = '';
-  late String _collectorName = '';
-  late double _unitNow = 0.00;
-  late double _unitPrev = 0.00;
-  late double _rate = 7.5;
-  late double _amount = 0.00;
-  late num _charge = 0;
-  late double _due = 0.00;
-  late double _advance = 0.00;
+  late String _title;
+  late String _name;
+  late String _collectorName;
+  late double _unitNow;
+  late double _unitPrev;
+  late double _rate;
+  late double _amount;
+  late num _charge;
+  late double _due;
+  late double _advance;
 
   final _nameFocusNode = FocusNode();
   final _unitNowFocusNode = FocusNode();
@@ -34,18 +36,24 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
   final _chargeFocusNode = FocusNode();
   final _dueFocusNode = FocusNode();
   final _advanceFocusNode = FocusNode();
+  final _collectorNameFocusNode = FocusNode();
 
   void _handleSubmit() {
-    print(_title);
-    print(_name);
-    print(_unitNow);
-    print(_unitPrev);
-    print(_rate);
-    print(_amount);
-    print(_charge);
-    print(_due);
-    print(_advance);
-    print(_collectorName);
+    dynamic newElectricBill = {
+      "title": _title,
+      "name": _name,
+      "unitNow": _unitNow,
+      "unitPrev": _unitPrev,
+      "rate": _rate,
+      "amount": _amount,
+      "charge": _charge,
+      "due": _due,
+      "advance": _advance,
+      "collectorName": _collectorName,
+    };
+
+    ElectricBills electricBills = ElectricBills();
+    electricBills.addElectricBill(newElectricBill);
   }
 
   @override
@@ -94,12 +102,13 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_unitNowFocusNode),
+                          .requestFocus(_unitPrevFocusNode),
                     ),
                     // --- Payer name
+
                     // -- Unit previous
                     TextFormField(
-                      initialValue: '0.00',
+                      initialValue: '24560.00',
                       decoration:
                           const InputDecoration(labelText: 'Unit Previous'),
                       focusNode: _unitPrevFocusNode,
@@ -120,9 +129,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           .requestFocus(_unitNowFocusNode),
                     ),
                     // -- Unit previous
+
                     // -- Unit now
                     TextFormField(
-                      initialValue: '0.00',
+                      initialValue: '26733.00',
                       decoration: const InputDecoration(labelText: 'Unit Now'),
                       focusNode: _unitNowFocusNode,
                       keyboardType:
@@ -142,12 +152,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           FocusScope.of(context).requestFocus(_rateFocusNode),
                     ),
                     // -- Unit now
-                    //
 
                     // -- Unit rate
                     TextFormField(
-
-                      initialValue: '0.00',
+                      initialValue: '7.5',
                       decoration: const InputDecoration(labelText: 'Rate'),
                       focusNode: _rateFocusNode,
                       keyboardType:
@@ -160,17 +168,17 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = double.parse(value);
+                          _rate = double.parse(value);
                         });
                       },
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(_amountFocusNode),
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_advanceFocusNode),
                     ),
                     // -- Unit rate
-                    //
+
                     // -- Due
                     TextFormField(
-                      initialValue: '0.00',
+                      initialValue: '765.00',
                       decoration: const InputDecoration(labelText: 'Due'),
                       focusNode: _dueFocusNode,
                       keyboardType:
@@ -183,17 +191,17 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = double.parse(value);
+                          _due = double.parse(value);
                         });
                       },
                       onFieldSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(_amountFocusNode),
                     ),
                     // -- Due
-                    //
+
                     // -- Advance
                     TextFormField(
-                      initialValue: '0.00',
+                      initialValue: '1000.00',
                       decoration: const InputDecoration(labelText: 'Advance'),
                       focusNode: _advanceFocusNode,
                       keyboardType:
@@ -206,17 +214,17 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = double.parse(value);
+                          _advance = double.parse(value);
                         });
                       },
                       onFieldSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(_chargeFocusNode),
                     ),
                     // -- Advance
-                    //
+
                     // -- Charge
                     TextFormField(
-                        initialValue: '0.00',
+                        initialValue: '20.00',
                         decoration: const InputDecoration(labelText: 'Charge'),
                         focusNode: _chargeFocusNode,
                         keyboardType:
@@ -229,15 +237,14 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            _unitPrev = double.parse(value);
+                            _charge = double.parse(value);
                           });
                         }),
                     // -- Charge
 
-                    //
                     // -- Amount
                     TextFormField(
-                      initialValue: '0.00',
+                      initialValue: '1432.00',
                       decoration: const InputDecoration(labelText: 'Amount'),
                       focusNode: _amountFocusNode,
                       keyboardType:
@@ -250,7 +257,27 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = double.parse(value);
+                          _amount = double.parse(value);
+                        });
+                      },
+                      onFieldSubmitted: (_) {},
+                    ),
+                    // -- Amount
+
+                    // -- Collector name
+                    TextFormField(
+                      initialValue: 'Maria Doe',
+                      decoration: const InputDecoration(labelText: 'Amount'),
+                      focusNode: _collectorNameFocusNode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter collector name';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _collectorName = value;
                         });
                       },
                       onFieldSubmitted: (_) {},
