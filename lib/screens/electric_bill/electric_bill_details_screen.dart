@@ -49,7 +49,7 @@ class ElectricBillDetailsScreen extends StatelessWidget {
                 DetailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
                 DetailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
                 DetailsKeyValue(
-                    'Per Unit:', '${loadedItem.rate.toString()} $currency'),
+                    'Per Unit:', '${loadedItem.unitRate.toString()} $currency'),
                 const SizedBox(
                   height: spaceExtraLarge,
                 ),

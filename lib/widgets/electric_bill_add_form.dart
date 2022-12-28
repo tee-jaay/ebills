@@ -1,9 +1,7 @@
-import 'package:ebills/models/electric_bill.dart';
-import 'package:ebills/providers/electric_bills.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../settings/constants.dart';
+import '../providers/electric_bills.dart';
 
 class ElectricBillAddForm extends StatefulWidget {
   const ElectricBillAddForm({Key? key}) : super(key: key);
@@ -17,16 +15,17 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
   final _isLoading = false;
 
-  late String _title;
-  late String _name;
-  late String _collectorName;
-  late double _unitNow;
-  late double _unitPrev;
-  late double _rate;
-  late double _amount;
-  late num _charge;
-  late double _due;
-  late double _advance;
+  late String _title = '';
+  late String _name = '';
+  late String _collectorName = '';
+  late num _unitNow = 0;
+  late num _unitPrev = 0;
+  late double _unitRate = 0.0;
+  late double _amount = 0.0;
+  late double _charge = 0.0;
+  late double _due = 0.0;
+  late double _advance = 0.0;
+  late String _paidDate = '';
 
   final _nameFocusNode = FocusNode();
   final _unitNowFocusNode = FocusNode();
@@ -37,6 +36,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
   final _dueFocusNode = FocusNode();
   final _advanceFocusNode = FocusNode();
   final _collectorNameFocusNode = FocusNode();
+  final _paidDateFocusNode = FocusNode();
 
   void _handleSubmit() {
     dynamic newElectricBill = {
@@ -44,12 +44,13 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
       "name": _name,
       "unitNow": _unitNow,
       "unitPrev": _unitPrev,
-      "rate": _rate,
+      "unitRate": _unitRate,
       "amount": _amount,
       "charge": _charge,
       "due": _due,
       "advance": _advance,
       "collectorName": _collectorName,
+      "paidDate": _paidDate,
     };
 
     ElectricBills electricBills = ElectricBills();
@@ -108,12 +109,11 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit previous
                     TextFormField(
-                      initialValue: '24560.00',
+                      initialValue: '24567',
                       decoration:
                           const InputDecoration(labelText: 'Unit Previous'),
                       focusNode: _unitPrevFocusNode,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter previous unit';
@@ -122,7 +122,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = double.parse(value);
+                          _unitPrev = num.parse(value);
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -132,11 +132,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit now
                     TextFormField(
-                      initialValue: '26733.00',
+                      initialValue: '26733',
                       decoration: const InputDecoration(labelText: 'Unit Now'),
                       focusNode: _unitNowFocusNode,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter unit now';
@@ -145,7 +144,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitNow = double.parse(value);
+                          _unitNow = num.parse(value);
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -168,11 +167,11 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _rate = double.parse(value);
+                          _unitRate = double.parse(value);
                         });
                       },
-                      onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_advanceFocusNode),
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_dueFocusNode),
                     ),
                     // -- Unit rate
 
@@ -194,8 +193,8 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           _due = double.parse(value);
                         });
                       },
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(_amountFocusNode),
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_advanceFocusNode),
                     ),
                     // -- Due
 
@@ -224,22 +223,26 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Charge
                     TextFormField(
-                        initialValue: '20.00',
-                        decoration: const InputDecoration(labelText: 'Charge'),
-                        focusNode: _chargeFocusNode,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter charge';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            _charge = double.parse(value);
-                          });
-                        }),
+                      initialValue: '20.00',
+                      decoration: const InputDecoration(labelText: 'Charge'),
+                      focusNode: _chargeFocusNode,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter charge';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _charge = double.parse(value);
+                        });
+                      },
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_amountFocusNode);
+                      },
+                    ),
                     // -- Charge
 
                     // -- Amount
@@ -260,7 +263,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           _amount = double.parse(value);
                         });
                       },
-                      onFieldSubmitted: (_) {},
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context)
+                            .requestFocus(_collectorNameFocusNode);
+                      },
                     ),
                     // -- Amount
 
@@ -280,9 +286,31 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           _collectorName = value;
                         });
                       },
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_paidDateFocusNode);
+                      },
+                    ),
+                    // -- Collector name
+
+                    // -- Paid date
+                    TextFormField(
+                      initialValue: '11-12-2022',
+                      decoration: const InputDecoration(labelText: 'Paid Date'),
+                      focusNode: _paidDateFocusNode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter paid date';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _paidDate = value;
+                        });
+                      },
                       onFieldSubmitted: (_) {},
                     ),
-                    // -- Amount
+                    // -- Paid date
 
                     const SizedBox(
                       height: spaceExtraLarge,

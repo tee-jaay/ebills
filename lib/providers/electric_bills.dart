@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-//import 'package:intl/intl.dart';
 
 import '../models/electric_bill.dart';
 
@@ -13,7 +12,7 @@ class ElectricBills with ChangeNotifier {
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
-    if(_electricBills.isNotEmpty){
+    if (_electricBills.isNotEmpty) {
       return;
     }
 
@@ -37,10 +36,10 @@ class ElectricBills with ChangeNotifier {
 
       for (var element in decodedData) {
         _electricBills.add(ElectricBill(
-          id:element["id"],
+          id: element["id"],
           title: element["title"],
           unitNow: element["unitNow"].toString(),
-          rate: element["unitRate"].toString(),
+          unitRate: element["unitRate"].toString(),
           amount: element["amount"].toString(),
           name: element["name"].toString(),
           collectorName: element["collectorName"].toString(),
@@ -67,9 +66,16 @@ class ElectricBills with ChangeNotifier {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/create');
 
-      final response = await http.post(url,body: jsonEncode({}));
-      print(response);
-      
+      final response = await http.post(
+        url,
+        body: jsonEncode(obj),
+        headers: {
+          "accept": "application/json",
+          "content-type": "application/json"
+        }
+      );
+      print(response.body);
+
       // notify the listeners
       notifyListeners();
     } catch (err) {

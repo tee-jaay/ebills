@@ -37,7 +37,7 @@ class ElectricBillsList extends StatelessWidget {
                                   itemBuilder: (_, i) => ElectricBillSingle(
                                     id: itemsData.electricBills[i].id ?? '',
                                     title: itemsData.electricBills[i].title ?? '',
-                                    rate: itemsData.electricBills[i].rate ?? '',
+                                    rate: itemsData.electricBills[i].unitRate ?? '',
                                     unit: itemsData.electricBills[i].unitNow ?? '',
                                     amount: itemsData.electricBills[i].amount ?? '',
                                   ),
