@@ -61,19 +61,24 @@ class ElectricBills with ChangeNotifier {
 
   // Add electric bill data
   Future<void> addElectricBill(Object obj) async {
-    print(obj);
+    // Basic auth config for cyclic
+    String username = dotenv.get("cyclicUsername", fallback: '');
+    String password = dotenv.get("cyclicPassword", fallback: '');
+    String userPassword = '$username:$password';
+    String usernamePasswordWithCodeUnits =
+        base64.encode(userPassword.codeUnits);
+    String basicAuth = 'Basic $usernamePasswordWithCodeUnits';
+    // Basic auth config for cyclic
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/create');
 
-      final response = await http.post(
-        url,
-        body: jsonEncode(obj),
-        headers: {
-          "accept": "application/json",
-          "content-type": "application/json"
-        }
-      );
+      final response = await http.post(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": basicAuth
+      });
+      print(response.statusCode);
       print(response.body);
 
       // notify the listeners
