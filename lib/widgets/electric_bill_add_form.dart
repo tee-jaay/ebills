@@ -74,7 +74,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // --- Title
                     TextFormField(
                       initialValue: '2022 Dec',
-                      decoration: const InputDecoration(labelText: 'Title'),
+                      decoration: const InputDecoration(
+                        labelText: 'Title',
+                        icon: Icon(Icons.text_format),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           _title = value;
@@ -88,8 +91,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // --- Payer name
                     TextFormField(
                       initialValue: 'Jhon Doe',
-                      decoration:
-                          const InputDecoration(labelText: 'Payer Name'),
+                      decoration: const InputDecoration(
+                        labelText: 'Payer Name',
+                        icon: Icon(Icons.person),
+                      ),
                       focusNode: _nameFocusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -110,8 +115,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Unit previous
                     TextFormField(
                       initialValue: '24567',
-                      decoration:
-                          const InputDecoration(labelText: 'Unit Previous'),
+                      decoration: const InputDecoration(
+                        labelText: 'Unit Previous',
+                        icon: Icon(Icons.ac_unit),
+                      ),
                       focusNode: _unitPrevFocusNode,
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -133,7 +140,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Unit now
                     TextFormField(
                       initialValue: '26733',
-                      decoration: const InputDecoration(labelText: 'Unit Now'),
+                      decoration: const InputDecoration(
+                        labelText: 'Unit Now',
+                        icon: Icon(Icons.ad_units),
+                      ),
                       focusNode: _unitNowFocusNode,
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -155,7 +165,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Unit rate
                     TextFormField(
                       initialValue: '7.5',
-                      decoration: const InputDecoration(labelText: 'Rate'),
+                      decoration: const InputDecoration(
+                        labelText: 'Rate',
+                        icon: Icon(Icons.currency_bitcoin),
+                      ),
                       focusNode: _rateFocusNode,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -178,7 +191,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Due
                     TextFormField(
                       initialValue: '765.00',
-                      decoration: const InputDecoration(labelText: 'Due'),
+                      decoration: const InputDecoration(
+                        labelText: 'Due',
+                        icon: Icon(Icons.memory),
+                      ),
                       focusNode: _dueFocusNode,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -201,7 +217,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Advance
                     TextFormField(
                       initialValue: '1000.00',
-                      decoration: const InputDecoration(labelText: 'Advance'),
+                      decoration: const InputDecoration(
+                        labelText: 'Advance',
+                        icon: Icon(Icons.money),
+                      ),
                       focusNode: _advanceFocusNode,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -224,7 +243,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Charge
                     TextFormField(
                       initialValue: '20.00',
-                      decoration: const InputDecoration(labelText: 'Charge'),
+                      decoration: const InputDecoration(
+                        labelText: 'Charge',
+                        icon: Icon(Icons.power),
+                      ),
                       focusNode: _chargeFocusNode,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -248,7 +270,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Amount
                     TextFormField(
                       initialValue: '1432.00',
-                      decoration: const InputDecoration(labelText: 'Amount'),
+                      decoration: const InputDecoration(
+                        labelText: 'Amount',
+                        icon: Icon(Icons.adb),
+                      ),
                       focusNode: _amountFocusNode,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -273,7 +298,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Collector name
                     TextFormField(
                       initialValue: 'Maria Doe',
-                      decoration: const InputDecoration(labelText: 'Collector\'s Name'),
+                      decoration: const InputDecoration(
+                        labelText: 'Collector\'s Name',
+                        icon: Icon(Icons.woman),
+                      ),
                       focusNode: _collectorNameFocusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -295,7 +323,10 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                     // -- Paid date
                     TextFormField(
                       initialValue: '11-12-2022',
-                      decoration: const InputDecoration(labelText: 'Paid Date'),
+                      decoration: const InputDecoration(
+                        labelText: 'Paid Date',
+                        icon: Icon(Icons.calendar_month),
+                      ),
                       focusNode: _paidDateFocusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
