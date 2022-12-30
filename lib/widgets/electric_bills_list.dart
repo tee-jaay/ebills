@@ -9,7 +9,7 @@ class ElectricBillsList extends StatelessWidget {
   const ElectricBillsList({Key? key}) : super(key: key);
 
   Future<void> _refreshEbills(BuildContext context) async {
-    await Provider.of<ElectricBills>(context, listen: false)
+    await Provider.of<ElectricBills>(context, listen: true)
         .fetchAndSetAllElectricBills();
   }
 
@@ -23,8 +23,8 @@ class ElectricBillsList extends StatelessWidget {
           builder: (ctx, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                      child: CircularProgressIndicator(),
+                    )
                   : RefreshIndicator(
                       onRefresh: () => _refreshEbills(context),
                       child: Consumer<ElectricBills>(

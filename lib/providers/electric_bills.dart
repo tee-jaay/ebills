@@ -31,24 +31,23 @@ class ElectricBills with ChangeNotifier {
 
       final decodedData = jsonDecode(response.body) as List<dynamic>;
       if (kDebugMode) {
-        print(decodedData);
+        // print(decodedData);
       }
 
       for (var element in decodedData) {
         _electricBills.add(ElectricBill(
-          id: element["id"],
-          title: element["title"],
-          unitNow: element["unitNow"].toString(),
-          unitRate: element["unitRate"].toString(),
-          amount: element["amount"].toString(),
-          name: element["name"].toString(),
-          collectorName: element["collectorName"].toString(),
-          unitPrev: element["unitPrev"].toString(),
-          charge: element["charge"].toString(),
-          due: element["due"].toString(),
-          advance: element["advance"].toString(),
-          // paidDate: DateFormat('yy-MM').format(element["paidDate"]),
-        ));
+            id: element["id"],
+            title: element["title"],
+            unitNow: element["unitNow"].toString(),
+            unitRate: element["unitRate"].toString(),
+            amount: element["amount"].toString(),
+            name: element["name"].toString(),
+            collectorName: element["collectorName"].toString(),
+            unitPrev: element["unitPrev"].toString(),
+            charge: element["charge"].toString(),
+            due: element["due"].toString(),
+            advance: element["advance"].toString(),
+            paidDate: element["paidDate"].toString()));
       }
       // notify the listeners
       notifyListeners();
@@ -60,7 +59,8 @@ class ElectricBills with ChangeNotifier {
   }
 
   // Add electric bill data
-  Future<void> addElectricBill(Object obj) async {
+  Future<int> addElectricBill(Object obj) async {
+    late int addResponseStatus;
     // Basic auth config for cyclic
     String username = dotenv.get("cyclicUsername", fallback: '');
     String password = dotenv.get("cyclicPassword", fallback: '');
@@ -78,9 +78,11 @@ class ElectricBills with ChangeNotifier {
         "content-type": "application/json",
         "Authorization": basicAuth
       });
-      print(response.statusCode);
-      print(response.body);
+      addResponseStatus = response.statusCode;
 
+      if (addResponseStatus == 201) {
+        clearAndFetchElectricBills();
+      }
       // notify the listeners
       notifyListeners();
     } catch (err) {
@@ -88,7 +90,7 @@ class ElectricBills with ChangeNotifier {
         print(err);
       }
     }
-    return;
+    return addResponseStatus;
   }
 
   // Show single electric bill
@@ -97,12 +99,10 @@ class ElectricBills with ChangeNotifier {
   }
 
   // Update electric bill's data
-  Future<void> updateElectricbill(String id) async {
+  Future<void> updateElectricBill(String id, Object obj) async {
     if (kDebugMode) {
       print('update E bill');
-    }
-    if (kDebugMode) {
-      print(id);
+      print(obj);
     }
     return;
   }
@@ -117,5 +117,9 @@ class ElectricBills with ChangeNotifier {
 
   List<ElectricBill> get electricBills {
     return [..._electricBills];
+  }
+
+  void clearAndFetchElectricBills() {
+    _electricBills.clear();
   }
 }

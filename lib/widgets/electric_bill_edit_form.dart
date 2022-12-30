@@ -4,14 +4,37 @@ import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
 import '../screens/electric_bill/electric_bill_list_screen.dart';
 
-class ElectricBillAddForm extends StatefulWidget {
-  const ElectricBillAddForm({Key? key}) : super(key: key);
+class ElectricBillEditForm extends StatefulWidget {
+  late String? title;
+  late String? name;
+  late String? collectorName;
+  late String? unitNow;
+  late String? unitPrev;
+  late String? unitRate;
+  late String? amount;
+  late String? charge;
+  late String? due;
+  late String? advance;
+  late String? paidDate;
+  ElectricBillEditForm({
+    required this.title,
+    required this.name,
+    required this.collectorName,
+    required this.unitNow,
+    required this.unitPrev,
+    required this.unitRate,
+    required this.amount,
+    required this.charge,
+    required this.due,
+    required this.advance,
+    required this.paidDate,
+    Key? key}) : super(key: key);
 
   @override
-  State<ElectricBillAddForm> createState() => _ElectricBillAddFormState();
+  State<ElectricBillEditForm> createState() => _ElectricBillEditFormState();
 }
 
-class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
+class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _isLoading = false;
@@ -74,6 +97,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.title);
     return _isLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -88,7 +112,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                   children: [
                     // --- Title
                     TextFormField(
-                      initialValue: '2022 Dec',
+                      initialValue: widget.title,
                       decoration: const InputDecoration(
                         labelText: 'Title',
                         icon: Icon(Icons.text_format),
@@ -105,7 +129,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // --- Payer name
                     TextFormField(
-                      initialValue: 'Jhon Doe',
+                      initialValue: widget.name,
                       decoration: const InputDecoration(
                         labelText: 'Payer Name',
                         icon: Icon(Icons.person),
@@ -129,7 +153,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit previous
                     TextFormField(
-                      initialValue: '24567',
+                      initialValue: widget.unitPrev,
                       decoration: const InputDecoration(
                         labelText: 'Unit Previous',
                         icon: Icon(Icons.ac_unit),
@@ -154,7 +178,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit now
                     TextFormField(
-                      initialValue: '26733',
+                      initialValue: widget.unitNow,
                       decoration: const InputDecoration(
                         labelText: 'Unit Now',
                         icon: Icon(Icons.ad_units),
@@ -179,7 +203,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit rate
                     TextFormField(
-                      initialValue: '7.5',
+                      initialValue: widget.unitRate,
                       decoration: const InputDecoration(
                         labelText: 'Rate',
                         icon: Icon(Icons.currency_bitcoin),
@@ -205,7 +229,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Due
                     TextFormField(
-                      initialValue: '765.00',
+                      initialValue: widget.due,
                       decoration: const InputDecoration(
                         labelText: 'Due',
                         icon: Icon(Icons.memory),
@@ -231,7 +255,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Advance
                     TextFormField(
-                      initialValue: '1000.00',
+                      initialValue: widget.advance,
                       decoration: const InputDecoration(
                         labelText: 'Advance',
                         icon: Icon(Icons.money),
@@ -257,7 +281,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Charge
                     TextFormField(
-                      initialValue: '20.00',
+                      initialValue: widget.charge,
                       decoration: const InputDecoration(
                         labelText: 'Charge',
                         icon: Icon(Icons.power),
@@ -284,7 +308,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Amount
                     TextFormField(
-                      initialValue: '1432.00',
+                      initialValue: widget.amount,
                       decoration: const InputDecoration(
                         labelText: 'Amount',
                         icon: Icon(Icons.adb),
@@ -312,7 +336,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Collector name
                     TextFormField(
-                      initialValue: 'Maria Doe',
+                      initialValue: widget.collectorName,
                       decoration: const InputDecoration(
                         labelText: 'Collector\'s Name',
                         icon: Icon(Icons.woman),
@@ -337,7 +361,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Paid date
                     TextFormField(
-                      initialValue: '11-12-2022',
+                      initialValue: widget.paidDate,
                       decoration: const InputDecoration(
                         labelText: 'Paid Date',
                         icon: Icon(Icons.calendar_month),
@@ -370,7 +394,12 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           _handleSubmit();
                         }
                       },
-                      child: const Text('Submit'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.green,
+                        ),
+                      ),
+                      child: Text('Update',),
                     ),
                   ],
                 ),

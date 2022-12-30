@@ -33,7 +33,6 @@ class AppRoot extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: const ElectricBillListScreen(),
-        // home: const ElectricBillAddScreen(),
         routes: {
           ElectricBillListScreen.routeName: (ctx) =>
               const ElectricBillListScreen(),

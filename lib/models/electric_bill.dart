@@ -10,6 +10,7 @@ class ElectricBill {
   String? charge;
   String? due;
   String? advance;
+  String? paidDate;
 
   ElectricBill({
     required this.id,
@@ -23,5 +24,6 @@ class ElectricBill {
     required this.charge,
     required this.due,
     required this.advance,
+    required this.paidDate,
   });
 }

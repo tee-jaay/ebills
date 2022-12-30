@@ -24,7 +24,7 @@ class ElectricBillDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(ElectricBillEditScreen.routeName);
+              Navigator.of(context).pushNamed(ElectricBillEditScreen.routeName, arguments: id);
             },
             icon: const Icon(
               Icons.edit,
@@ -40,27 +40,28 @@ class ElectricBillDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(spaceMedium),
             child: Column(
               children: [
-                DetailsKeyValue('Paid For:', loadedItem.title),
+                detailsKeyValue('Paid For:', loadedItem.title),
                 DividerLine(spaceMedium, 2.0, Colors.black),
-                DetailsKeyValue(
+                detailsKeyValue(
                     'Collector', loadedItem.collectorName.toString()),
-                DetailsKeyValue('Payer:', loadedItem.name.toString()),
+                detailsKeyValue('Payer:', loadedItem.name.toString()),
+                detailsKeyValue('Paid At:', loadedItem.paidDate.toString()),
                 DividerLine(spaceLarge, 1.0, Colors.black54),
-                DetailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
-                DetailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
-                DetailsKeyValue(
+                detailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
+                detailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
+                detailsKeyValue(
                     'Per Unit:', '${loadedItem.unitRate.toString()} $currency'),
                 const SizedBox(
                   height: spaceExtraLarge,
                 ),
-                DetailsKeyValue(
+                detailsKeyValue(
                     'Due:', '${loadedItem.due.toString()} $currency'),
-                DetailsKeyValue(
+                detailsKeyValue(
                     'Advance', '${loadedItem.advance.toString()} $currency'),
-                DetailsKeyValue(
+                detailsKeyValue(
                     'Charge', '${loadedItem.charge.toString()} $currency'),
                 DividerLine(spaceMedium, 1.0, Colors.black),
-                DetailsKeyValue(
+                detailsKeyValue(
                     'Amount', '${loadedItem.amount.toString()} $currency'),
               ],
             ),
