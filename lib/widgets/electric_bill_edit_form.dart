@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
-import '../screens/electric_bill/electric_bill_list_screen.dart';
 
 class ElectricBillEditForm extends StatefulWidget {
+  late String id;
   late String? title;
   late String? name;
   late String? collectorName;
@@ -16,6 +16,7 @@ class ElectricBillEditForm extends StatefulWidget {
   late String? due;
   late String? advance;
   late String? paidDate;
+
   ElectricBillEditForm({
     required this.title,
     required this.name,
@@ -28,7 +29,9 @@ class ElectricBillEditForm extends StatefulWidget {
     required this.due,
     required this.advance,
     required this.paidDate,
-    Key? key}) : super(key: key);
+    required this.id,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ElectricBillEditForm> createState() => _ElectricBillEditFormState();
@@ -39,17 +42,17 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
 
   final _isLoading = false;
 
-  late String _title = '';
-  late String _name = '';
-  late String _collectorName = '';
-  late num _unitNow = 0;
-  late num _unitPrev = 0;
-  late double _unitRate = 0.0;
-  late double _amount = 0.0;
-  late double _charge = 0.0;
-  late double _due = 0.0;
-  late double _advance = 0.0;
-  late String _paidDate = '';
+  late String? _title = widget.title;
+  late String? _name = widget.title;
+  late String? _collectorName = widget.collectorName;
+  late String? _unitNow = widget.unitNow;
+  late String? _unitPrev = widget.unitPrev;
+  late String? _unitRate = widget.unitRate;
+  late String? _amount = widget.amount;
+  late String? _charge = widget.charge;
+  late String? _due = widget.due;
+  late String? _advance = widget.advance;
+  late String? _paidDate = widget.paidDate;
 
   final _nameFocusNode = FocusNode();
   final _unitNowFocusNode = FocusNode();
@@ -63,7 +66,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
   final _paidDateFocusNode = FocusNode();
 
   void _handleSubmit() {
-    dynamic newElectricBill = {
+    dynamic selectedElectricBill = {
       "title": _title,
       "name": _name,
       "unitNow": _unitNow,
@@ -78,19 +81,22 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
     };
 
     ElectricBills electricBills = ElectricBills();
-    electricBills.addElectricBill(newElectricBill).then((value) {
-      if (value == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-            'Entry add success',
-            style: TextStyle(color: Colors.green),
-          )),
-        );
-        Navigator.pushNamed(context, ElectricBillListScreen.routeName);
-      } else {
-        print('Adding error occurred');
-      }
+    electricBills.updateElectricBill(widget.id, selectedElectricBill).then((value) {
+      // print(widget.id);
+      // print(selectedElectricBill);
+      // print(value);
+      // if (value == 201) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //         content: Text(
+      //       'Entry add success',
+      //       style: TextStyle(color: Colors.green),
+      //     )),
+      //   );
+      //   Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+      // } else {
+      //   print('Adding error occurred');
+      // }
       return value;
     });
   }
@@ -168,7 +174,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = num.parse(value);
+                          _unitPrev = value;
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -193,7 +199,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitNow = num.parse(value);
+                          _unitNow = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -219,7 +225,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitRate = double.parse(value);
+                          _unitRate = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -245,7 +251,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _due = double.parse(value);
+                          _due = value;
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -271,7 +277,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _advance = double.parse(value);
+                          _advance = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -297,7 +303,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _charge = double.parse(value);
+                          _charge = value;
                         });
                       },
                       onFieldSubmitted: (_) {
@@ -324,7 +330,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _amount = double.parse(value);
+                          _amount = value;
                         });
                       },
                       onFieldSubmitted: (_) {
@@ -399,7 +405,9 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                           Colors.green,
                         ),
                       ),
-                      child: Text('Update',),
+                      child: Text(
+                        'Update',
+                      ),
                     ),
                   ],
                 ),

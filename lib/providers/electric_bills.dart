@@ -6,7 +6,19 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/electric_bill.dart';
 
+// Todo: move to a separate class and access by extend
+class SetServerHeaders {
+  //  Headers credentials for cyclic
+  static String basicAuthHeaders() {
+    String userPassword =
+        '${dotenv.get("cyclicUsername", fallback: '')}:${dotenv.get("cyclicPassword", fallback: '')}';
+    return 'Basic ${base64.encode(utf8.encode(userPassword))}';
+  }
+}
+
 class ElectricBills with ChangeNotifier {
+  int _httpResponseStatus = 0;
+
   // Declare local class for electric bills
   final List<ElectricBill> _electricBills = [];
 
@@ -20,7 +32,9 @@ class ElectricBills with ChangeNotifier {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/index');
 
-      final response = await http.get(url);
+      final response = await http.get(url, headers: {
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
 
       if (response.body.isEmpty) {
         if (kDebugMode) {
@@ -60,15 +74,6 @@ class ElectricBills with ChangeNotifier {
 
   // Add electric bill data
   Future<int> addElectricBill(Object obj) async {
-    late int addResponseStatus;
-    // Basic auth config for cyclic
-    String username = dotenv.get("cyclicUsername", fallback: '');
-    String password = dotenv.get("cyclicPassword", fallback: '');
-    String userPassword = '$username:$password';
-    String usernamePasswordWithCodeUnits =
-        base64.encode(userPassword.codeUnits);
-    String basicAuth = 'Basic $usernamePasswordWithCodeUnits';
-    // Basic auth config for cyclic
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/create');
@@ -76,11 +81,11 @@ class ElectricBills with ChangeNotifier {
       final response = await http.post(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
         "content-type": "application/json",
-        "Authorization": basicAuth
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
-      addResponseStatus = response.statusCode;
+      _httpResponseStatus = response.statusCode;
 
-      if (addResponseStatus == 201) {
+      if (_httpResponseStatus == 201) {
         clearAndFetchElectricBills();
       }
       // notify the listeners
@@ -90,7 +95,7 @@ class ElectricBills with ChangeNotifier {
         print(err);
       }
     }
-    return addResponseStatus;
+    return _httpResponseStatus;
   }
 
   // Show single electric bill
@@ -99,20 +104,26 @@ class ElectricBills with ChangeNotifier {
   }
 
   // Update electric bill's data
-  Future<void> updateElectricBill(String id, Object obj) async {
+  Future<int> updateElectricBill(String id, Object obj) async {
     if (kDebugMode) {
       print('update E bill');
+      print(id);
       print(obj);
     }
-    return;
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/update/$id');
+      final response = await http.put(url);
+    } catch (err) {}
+    return _httpResponseStatus;
   }
 
   // Delete electric bill's data
-  Future<void> deleteElectricBill(String id) async {
+  Future<int> deleteElectricBill(String id) async {
     if (kDebugMode) {
       print(id);
     }
-    return;
+    return 0;
   }
 
   List<ElectricBill> get electricBills {

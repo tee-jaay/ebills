@@ -35,6 +35,7 @@ class ElectricBillEditScreen extends StatelessWidget {
             unitNow: loadedItem.unitNow,
             unitPrev: loadedItem.unitPrev,
             unitRate: loadedItem.unitRate,
+            id: id,
           ),
         ),
       ),
