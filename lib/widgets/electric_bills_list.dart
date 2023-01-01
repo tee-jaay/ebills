@@ -9,7 +9,7 @@ class ElectricBillsList extends StatelessWidget {
   const ElectricBillsList({Key? key}) : super(key: key);
 
   Future<void> _refreshEbills(BuildContext context) async {
-    await Provider.of<ElectricBills>(context, listen: true)
+    await Provider.of<ElectricBills>(context, listen: false)
         .fetchAndSetAllElectricBills();
   }
 

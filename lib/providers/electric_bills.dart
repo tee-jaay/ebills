@@ -20,14 +20,10 @@ class ElectricBills with ChangeNotifier {
   int _httpResponseStatus = 0;
 
   // Declare local class for electric bills
-  final List<ElectricBill> _electricBills = [];
+  List<ElectricBill> _electricBills = [];
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
-    if (_electricBills.isNotEmpty) {
-      return;
-    }
-
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/index');
@@ -36,16 +32,10 @@ class ElectricBills with ChangeNotifier {
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
 
-      if (response.body.isEmpty) {
-        if (kDebugMode) {
-          print('Empty data');
-        }
-        return;
-      }
-
+      // final decodedData = jsonDecode(response.body) as Map<String, dynamic>;
       final decodedData = jsonDecode(response.body) as List<dynamic>;
-      if (kDebugMode) {
-        // print(decodedData);
+      if(decodedData == null){
+        return;
       }
 
       for (var element in decodedData) {
@@ -69,14 +59,16 @@ class ElectricBills with ChangeNotifier {
       if (kDebugMode) {
         print(err);
       }
+      throw(err);
     }
   }
 
   // Add electric bill data
   Future<int> addElectricBill(Object obj) async {
+    clearElectricBills();
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/create');
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/store');
 
       final response = await http.post(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
@@ -85,11 +77,8 @@ class ElectricBills with ChangeNotifier {
       });
       _httpResponseStatus = response.statusCode;
 
-      if (_httpResponseStatus == 201) {
-        clearAndFetchElectricBills();
-      }
       // notify the listeners
-      notifyListeners();
+      // notifyListeners();
     } catch (err) {
       if (kDebugMode) {
         print(err);
@@ -107,13 +96,21 @@ class ElectricBills with ChangeNotifier {
   Future<int> updateElectricBill(String id, Object obj) async {
     if (kDebugMode) {
       print('update E bill');
-      print(id);
       print(obj);
     }
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/update/$id');
-      final response = await http.put(url);
+      final response = await http.put(
+          url,
+        body: jsonEncode(obj),
+        headers: {
+          "accept": "application/json",
+          "content-type": "application/json",
+          "Authorization": SetServerHeaders.basicAuthHeaders(),
+        }
+      );
+      print(response);
     } catch (err) {}
     return _httpResponseStatus;
   }
@@ -127,10 +124,10 @@ class ElectricBills with ChangeNotifier {
   }
 
   List<ElectricBill> get electricBills {
-    return [..._electricBills];
+    return [..._electricBills.reversed];
   }
 
-  void clearAndFetchElectricBills() {
+  void clearElectricBills() {
     _electricBills.clear();
   }
 }
