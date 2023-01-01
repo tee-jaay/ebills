@@ -1,16 +1,32 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../settings/constants.dart';
 import '../../providers/electric_bills.dart';
+import 'electric_bill_edit_screen.dart';
 import '../../widgets/details_key_value.dart';
 import '../../widgets/divider_line.dart';
-import 'electric_bill_edit_screen.dart';
+import '../../widgets/image_input.dart';
 
-class ElectricBillDetailsScreen extends StatelessWidget {
+class ElectricBillDetailsScreen extends StatefulWidget {
   static const routeName = electricBillDetailsScreenRouteName;
 
   const ElectricBillDetailsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ElectricBillDetailsScreen> createState() =>
+      _ElectricBillDetailsScreenState();
+}
+
+class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
+  late File _pickedImage;
+
+  void _selectImage(File pickedImage) {
+    print('_selectImage');
+    print(pickedImage);
+    _pickedImage = pickedImage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +65,13 @@ class ElectricBillDetailsScreen extends StatelessWidget {
                       'Collector', loadedItem.collectorName.toString()),
                   detailsKeyValue('Payer:', loadedItem.name.toString()),
                   detailsKeyValue('Paid At:', loadedItem.paidDate.toString()),
-                  const SizedBox(height: spaceMax,),
+                  const SizedBox(
+                    height: spaceMax,
+                  ),
                   detailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
                   detailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
-                  detailsKeyValue(
-                      'Per Unit:', '${loadedItem.unitRate.toString()} $currency'),
+                  detailsKeyValue('Per Unit:',
+                      '${loadedItem.unitRate.toString()} $currency'),
                   const SizedBox(
                     height: spaceExtraLarge,
                   ),
@@ -66,12 +84,10 @@ class ElectricBillDetailsScreen extends StatelessWidget {
                   DividerLine(spaceMedium, 1.0, Colors.black),
                   detailsKeyValue(
                       'Amount', '${loadedItem.amount.toString()} $currency'),
-                  const SizedBox(height: spaceMedium,),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 4,
-                    width: double.infinity,
-                    child: Image.network(loadedItem.imageUrl.toString(),fit: BoxFit.cover,),
+                  const SizedBox(
+                    height: spaceMedium,
                   ),
+                  ImageInput(_selectImage),
                 ],
               ),
             ),
