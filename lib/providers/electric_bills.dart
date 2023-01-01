@@ -34,24 +34,27 @@ class ElectricBills with ChangeNotifier {
 
       // final decodedData = jsonDecode(response.body) as Map<String, dynamic>;
       final decodedData = jsonDecode(response.body) as List<dynamic>;
-      if(decodedData == null){
+      if (decodedData == null) {
         return;
       }
 
       for (var element in decodedData) {
         _electricBills.add(ElectricBill(
-            id: element["id"],
-            title: element["title"],
-            unitNow: element["unitNow"].toString(),
-            unitRate: element["unitRate"].toString(),
-            amount: element["amount"].toString(),
-            name: element["name"].toString(),
-            collectorName: element["collectorName"].toString(),
-            unitPrev: element["unitPrev"].toString(),
-            charge: element["charge"].toString(),
-            due: element["due"].toString(),
-            advance: element["advance"].toString(),
-            paidDate: element["paidDate"].toString()));
+          id: element["id"],
+          title: element["title"],
+          unitNow: element["unitNow"].toString(),
+          unitRate: element["unitRate"].toString(),
+          amount: element["amount"].toString(),
+          name: element["name"].toString(),
+          collectorName: element["collectorName"].toString(),
+          unitPrev: element["unitPrev"].toString(),
+          charge: element["charge"].toString(),
+          due: element["due"].toString(),
+          advance: element["advance"].toString(),
+          paidDate: element["paidDate"].toString(),
+          imageUrl: element["imageUrl"].toString(),
+          fileUrl: element["fileUrl"].toString(),
+        ));
       }
       // notify the listeners
       notifyListeners();
@@ -59,13 +62,13 @@ class ElectricBills with ChangeNotifier {
       if (kDebugMode) {
         print(err);
       }
-      throw(err);
+      throw (err);
     }
   }
 
   // Add electric bill data
   Future<int> addElectricBill(Object obj) async {
-    clearElectricBills();
+    _clearElectricBills();
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/store');
@@ -101,17 +104,16 @@ class ElectricBills with ChangeNotifier {
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/update/$id');
-      final response = await http.put(
-          url,
-        body: jsonEncode(obj),
-        headers: {
-          "accept": "application/json",
-          "content-type": "application/json",
-          "Authorization": SetServerHeaders.basicAuthHeaders(),
-        }
-      );
-      print(response);
-    } catch (err) {}
+      final response = await http.put(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
+      _clearElectricBills();
+      _httpResponseStatus = response.statusCode;
+    } catch (err) {
+      throw err;
+    }
     return _httpResponseStatus;
   }
 
@@ -127,7 +129,7 @@ class ElectricBills with ChangeNotifier {
     return [..._electricBills.reversed];
   }
 
-  void clearElectricBills() {
+  void _clearElectricBills() {
     _electricBills.clear();
   }
 }

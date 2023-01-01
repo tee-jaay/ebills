@@ -1,3 +1,4 @@
+import 'package:ebills/screens/electric_bill/electric_bill_details_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
@@ -78,32 +79,30 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
       "advance": _advance,
       "collectorName": _collectorName,
       "paidDate": _paidDate,
+      "fileUrl": "",
+      "imageUrl": "",
     };
 
     ElectricBills electricBills = ElectricBills();
     electricBills.updateElectricBill(widget.id, selectedElectricBill).then((value) {
-      // print(widget.id);
-      // print(selectedElectricBill);
-      // print(value);
-      // if (value == 201) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //         content: Text(
-      //       'Entry add success',
-      //       style: TextStyle(color: Colors.green),
-      //     )),
-      //   );
-      //   Navigator.pushNamed(context, ElectricBillListScreen.routeName);
-      // } else {
-      //   print('Adding error occurred');
-      // }
+      if (value == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+            'Update success',
+            style: TextStyle(color: Colors.yellow),
+          )),
+        );
+        Navigator.pushNamed(context, ElectricBillDetailsScreen.routeName, arguments: widget.id);
+      } else {
+        print('Adding error occurred');
+      }
       return value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.title);
     return _isLoading
         ? const Center(
             child: CircularProgressIndicator(),

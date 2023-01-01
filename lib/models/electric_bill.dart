@@ -11,6 +11,8 @@ class ElectricBill {
   String? due;
   String? advance;
   String? paidDate;
+  String? imageUrl;
+  String? fileUrl;
 
   ElectricBill({
     required this.id,
@@ -25,5 +27,7 @@ class ElectricBill {
     required this.due,
     required this.advance,
     required this.paidDate,
+    required this.imageUrl,
+    required this.fileUrl,
   });
 }

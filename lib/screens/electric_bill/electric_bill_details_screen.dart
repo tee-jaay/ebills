@@ -24,7 +24,8 @@ class ElectricBillDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(ElectricBillEditScreen.routeName, arguments: id);
+              Navigator.of(context)
+                  .pushNamed(ElectricBillEditScreen.routeName, arguments: id);
             },
             icon: const Icon(
               Icons.edit,
@@ -35,35 +36,44 @@ class ElectricBillDetailsScreen extends StatelessWidget {
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(spaceMedium),
-            child: Column(
-              children: [
-                detailsKeyValue('Paid For:', loadedItem.title),
-                DividerLine(spaceMedium, 2.0, Colors.black),
-                detailsKeyValue(
-                    'Collector', loadedItem.collectorName.toString()),
-                detailsKeyValue('Payer:', loadedItem.name.toString()),
-                detailsKeyValue('Paid At:', loadedItem.paidDate.toString()),
-                DividerLine(spaceLarge, 1.0, Colors.black54),
-                detailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
-                detailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
-                detailsKeyValue(
-                    'Per Unit:', '${loadedItem.unitRate.toString()} $currency'),
-                const SizedBox(
-                  height: spaceExtraLarge,
-                ),
-                detailsKeyValue(
-                    'Due:', '${loadedItem.due.toString()} $currency'),
-                detailsKeyValue(
-                    'Advance', '${loadedItem.advance.toString()} $currency'),
-                detailsKeyValue(
-                    'Charge', '${loadedItem.charge.toString()} $currency'),
-                DividerLine(spaceMedium, 1.0, Colors.black),
-                detailsKeyValue(
-                    'Amount', '${loadedItem.amount.toString()} $currency'),
-              ],
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(spaceMedium),
+              child: Column(
+                children: [
+                  detailsKeyValue('Paid For:', loadedItem.title),
+                  DividerLine(spaceMedium, 2.0, Colors.black),
+                  detailsKeyValue(
+                      'Collector', loadedItem.collectorName.toString()),
+                  detailsKeyValue('Payer:', loadedItem.name.toString()),
+                  detailsKeyValue('Paid At:', loadedItem.paidDate.toString()),
+                  const SizedBox(height: spaceMax,),
+                  detailsKeyValue('Unit Now:', loadedItem.unitNow.toString()),
+                  detailsKeyValue('Unit Prev:', loadedItem.unitPrev.toString()),
+                  detailsKeyValue(
+                      'Per Unit:', '${loadedItem.unitRate.toString()} $currency'),
+                  const SizedBox(
+                    height: spaceExtraLarge,
+                  ),
+                  detailsKeyValue(
+                      'Due:', '${loadedItem.due.toString()} $currency'),
+                  detailsKeyValue(
+                      'Advance', '${loadedItem.advance.toString()} $currency'),
+                  detailsKeyValue(
+                      'Charge', '${loadedItem.charge.toString()} $currency'),
+                  DividerLine(spaceMedium, 1.0, Colors.black),
+                  detailsKeyValue(
+                      'Amount', '${loadedItem.amount.toString()} $currency'),
+                  const SizedBox(height: spaceMedium,),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: Image.network(loadedItem.imageUrl.toString(),fit: BoxFit.cover,),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

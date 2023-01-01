@@ -52,6 +52,8 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
       "advance": _advance,
       "collectorName": _collectorName,
       "paidDate": _paidDate,
+      "fileUrl": "",
+      "imageUrl": "",
     };
 
     ElectricBills electricBills = ElectricBills();
