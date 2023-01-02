@@ -1,14 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as sysPaths;
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
 import '../settings/constants.dart';
+import '../providers/electric_bills.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput(this.onSelectImage, {Key? key}) : super(key: key);
-  final Function onSelectImage;
+  String id;
+
+  ImageInput({required this.id, Key? key}) : super(key: key);
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -16,6 +20,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
+  late String _imageUrl = '';
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
@@ -26,7 +31,6 @@ class _ImageInputState extends State<ImageInput> {
     if (imageFile == null) {
       return;
     }
-    print(imageFile.path);
     setState(() {
       _storedImage = File(imageFile.path);
     });
@@ -34,8 +38,56 @@ class _ImageInputState extends State<ImageInput> {
     final fileName = path.basename(imageFile.path);
     final savedImage =
         await File(imageFile.path).copy('${appDir.path}/$fileName');
-    widget.onSelectImage(savedImage);
-    print(savedImage);
+
+    // ----- cloudinary
+    String cloudName = dotenv.get("cloudinaryCloudName");
+    String apiKey = dotenv.get("cloudinaryApiKey");
+    String apiSecret = dotenv.get("cloudinaryApiSecret");
+    final Cloudinary _cloudinaryClient = Cloudinary.full(
+      cloudName: cloudName,
+      apiKey: apiKey,
+      apiSecret: apiSecret,
+    );
+
+    final response =
+        await _cloudinaryClient.uploadResource(CloudinaryUploadResource(
+            filePath: savedImage.path,
+            fileBytes: savedImage.readAsBytesSync(),
+            resourceType: CloudinaryResourceType.image,
+            folder: 'utilityBillsApp/electric-bills',
+            fileName: '${widget.id}',
+            progressCallback: (count, total) {
+              print('Uploading image from file with progress: $count/$total');
+            }));
+
+    if (response.isSuccessful) {
+      String? imageUrl = response.secureUrl;
+      setState(() {
+        _imageUrl = imageUrl!;
+      });
+      dynamic selectedElectricBill = {
+        "imageUrl": imageUrl,
+      };
+
+      ElectricBills electricBills = ElectricBills();
+      electricBills
+          .updateElectricBill(widget.id, selectedElectricBill)
+          .then((value) {
+        if (value == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text(
+              'Image upload success',
+              style: TextStyle(color: Colors.greenAccent),
+            )),
+          );
+        } else {
+          print('Adding error occurred');
+        }
+        return value;
+      });
+    }
+    // ----- cloudinary
   }
 
   @override
@@ -49,13 +101,13 @@ class _ImageInputState extends State<ImageInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           alignment: Alignment.center,
-          child: _storedImage != null
-              ? Image.file(
-                  _storedImage!,
+          child: _imageUrl == ''
+              ? const Text('No image')
+              : Image.network(
+                  _imageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
-                )
-              : const Text('No image taken'),
+                ),
         ),
         const SizedBox(
           width: spaceSmall,

@@ -20,14 +20,6 @@ class ElectricBillDetailsScreen extends StatefulWidget {
 }
 
 class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
-  late File _pickedImage;
-
-  void _selectImage(File pickedImage) {
-    print('_selectImage');
-    print(pickedImage);
-    _pickedImage = pickedImage;
-  }
-
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments as String;
@@ -87,7 +79,7 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
                   const SizedBox(
                     height: spaceMedium,
                   ),
-                  ImageInput(_selectImage),
+                  ImageInput(id: id),
                 ],
               ),
             ),
