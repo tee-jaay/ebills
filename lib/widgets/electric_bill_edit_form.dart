@@ -1,8 +1,8 @@
-import 'package:ebills/screens/electric_bill/electric_bill_details_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
+import '../screens/electric_bill/electric_bill_details_screen.dart';
 
 class ElectricBillEditForm extends StatefulWidget {
   late String id;
@@ -79,8 +79,6 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
       "advance": _advance,
       "collectorName": _collectorName,
       "paidDate": _paidDate,
-      "fileUrl": "",
-      "imageUrl": "",
     };
 
     ElectricBills electricBills = ElectricBills();
