@@ -13,7 +13,8 @@ class ImageInput extends StatefulWidget {
   String id;
   String imageUrl;
 
-  ImageInput({required this.id,required this.imageUrl, Key? key}) : super(key: key);
+  ImageInput({required this.id, required this.imageUrl, Key? key})
+      : super(key: key);
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -21,7 +22,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
-  late String _imageUrl = '';
+  late String _imageUrl = widget.imageUrl;
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
@@ -102,10 +103,11 @@ class _ImageInputState extends State<ImageInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           alignment: Alignment.center,
-          child: widget.imageUrl == ''
+          child: _imageUrl.isEmpty
               ? const Text('No image')
               : Image.network(
-                  widget.imageUrl,
+                  // widget.imageUrl,
+                  _imageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
