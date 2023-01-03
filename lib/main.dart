@@ -14,6 +14,7 @@ import 'screens/auth/sign_up_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const AppRoot());
 }
 

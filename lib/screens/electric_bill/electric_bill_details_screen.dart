@@ -79,7 +79,10 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
                   const SizedBox(
                     height: spaceMedium,
                   ),
-                  ImageInput(id: id),
+                  ImageInput(
+                    id: id,
+                    imageUrl: loadedItem.imageUrl.toString(),
+                  ),
                 ],
               ),
             ),

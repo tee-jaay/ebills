@@ -11,8 +11,9 @@ import '../providers/electric_bills.dart';
 
 class ImageInput extends StatefulWidget {
   String id;
+  String imageUrl;
 
-  ImageInput({required this.id, Key? key}) : super(key: key);
+  ImageInput({required this.id,required this.imageUrl, Key? key}) : super(key: key);
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -55,7 +56,7 @@ class _ImageInputState extends State<ImageInput> {
             fileBytes: savedImage.readAsBytesSync(),
             resourceType: CloudinaryResourceType.image,
             folder: 'utilityBillsApp/electric-bills',
-            fileName: '${widget.id}',
+            fileName: widget.id,
             progressCallback: (count, total) {
               print('Uploading image from file with progress: $count/$total');
             }));
@@ -101,10 +102,10 @@ class _ImageInputState extends State<ImageInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           alignment: Alignment.center,
-          child: _imageUrl == ''
+          child: widget.imageUrl == ''
               ? const Text('No image')
               : Image.network(
-                  _imageUrl,
+                  widget.imageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
