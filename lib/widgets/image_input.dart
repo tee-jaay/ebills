@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as sysPaths;
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
 import '../settings/constants.dart';
+import '../services/cloudinary_services.dart';
 import '../providers/electric_bills.dart';
 
 class ImageInput extends StatefulWidget {
@@ -42,26 +42,13 @@ class _ImageInputState extends State<ImageInput> {
         await File(imageFile.path).copy('${appDir.path}/$fileName');
 
     // ----- cloudinary
-    String cloudName = dotenv.get("cloudinaryCloudName");
-    String apiKey = dotenv.get("cloudinaryApiKey");
-    String apiSecret = dotenv.get("cloudinaryApiSecret");
-    final Cloudinary _cloudinaryClient = Cloudinary.full(
-      cloudName: cloudName,
-      apiKey: apiKey,
-      apiSecret: apiSecret,
-    );
+    CloudinaryResponse response =
+        await CloudinaryServices.uploadFile(savedImage, widget.id);
 
-    final response =
-        await _cloudinaryClient.uploadResource(CloudinaryUploadResource(
-            filePath: savedImage.path,
-            fileBytes: savedImage.readAsBytesSync(),
-            resourceType: CloudinaryResourceType.image,
-            folder: 'utilityBillsApp/electric-bills',
-            fileName: widget.id,
-            progressCallback: (count, total) {
-              print('Uploading image from file with progress: $count/$total');
-            }));
-
+    print('response---');
+    print(response);
+    print('response---');
+    // ----- cloudinary
     if (response.isSuccessful) {
       String? imageUrl = response.secureUrl;
       setState(() {
@@ -89,7 +76,6 @@ class _ImageInputState extends State<ImageInput> {
         return value;
       });
     }
-    // ----- cloudinary
   }
 
   @override
