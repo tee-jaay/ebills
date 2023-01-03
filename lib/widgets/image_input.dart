@@ -42,12 +42,9 @@ class _ImageInputState extends State<ImageInput> {
         await File(imageFile.path).copy('${appDir.path}/$fileName');
 
     // ----- cloudinary
+    CloudinaryServices _cloudinaryServices = CloudinaryServices();
     CloudinaryResponse response =
-        await CloudinaryServices.uploadFile(savedImage, widget.id);
-
-    print('response---');
-    print(response);
-    print('response---');
+        await _cloudinaryServices.uploadFile(savedImage, widget.id);
     // ----- cloudinary
     if (response.isSuccessful) {
       String? imageUrl = response.secureUrl;

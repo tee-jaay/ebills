@@ -2,12 +2,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
-class CloudinaryServices {  
-  static final String _cloudName = dotenv.get("cloudinaryCloudName");
-  static final String _apiKey = dotenv.get("cloudinaryApiKey");
-  static final String _apiSecret = dotenv.get("cloudinaryApiSecret");
+class CloudinaryServices {
+  final String _cloudName = dotenv.get("cloudinaryCloudName");
+  final String _apiKey = dotenv.get("cloudinaryApiKey");
+  final String _apiSecret = dotenv.get("cloudinaryApiSecret");
 
-  static Future<CloudinaryResponse> uploadFile(
+  Future<CloudinaryResponse> uploadFile(
       File savedImage, String fileName) async {
     final Cloudinary _cloudinaryClient = Cloudinary.full(
       cloudName: _cloudName,
