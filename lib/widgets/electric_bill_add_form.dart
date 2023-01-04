@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
@@ -68,7 +69,9 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
         );
         Navigator.pushNamed(context, ElectricBillListScreen.routeName);
       } else {
-        print('Adding error occurred');
+        if (kDebugMode) {
+          print('Adding error occurred');
+        }
       }
       return value;
     });
@@ -188,7 +191,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       ),
                       focusNode: _rateFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter rate';
@@ -214,7 +217,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       ),
                       focusNode: _dueFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter due';
@@ -240,7 +243,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       ),
                       focusNode: _advanceFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter advance';
@@ -266,7 +269,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       ),
                       focusNode: _chargeFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter charge';

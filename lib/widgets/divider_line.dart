@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class DividerLine extends StatelessWidget {
-  DividerLine(
+  const DividerLine(
     this.space,
     this.width,
     this.color, {
     Key? key,
   }) : super(key: key);
 
-  double space;
-  double width;
-  Color color;
+  final double space;
+  final double width;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

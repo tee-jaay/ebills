@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/constants.dart';
@@ -5,20 +6,20 @@ import '../providers/electric_bills.dart';
 import '../screens/electric_bill/electric_bill_details_screen.dart';
 
 class ElectricBillEditForm extends StatefulWidget {
-  late String id;
-  late String? title;
-  late String? name;
-  late String? collectorName;
-  late String? unitNow;
-  late String? unitPrev;
-  late String? unitRate;
-  late String? amount;
-  late String? charge;
-  late String? due;
-  late String? advance;
-  late String? paidDate;
+  final String id;
+  final String? title;
+  final String? name;
+  final String? collectorName;
+  final String? unitNow;
+  final String? unitPrev;
+  final String? unitRate;
+  final String? amount;
+  final String? charge;
+  final String? due;
+  final String? advance;
+  final String? paidDate;
 
-  ElectricBillEditForm({
+  const ElectricBillEditForm({
     required this.title,
     required this.name,
     required this.collectorName,
@@ -82,7 +83,9 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
     };
 
     ElectricBills electricBills = ElectricBills();
-    electricBills.updateElectricBill(widget.id, selectedElectricBill).then((value) {
+    electricBills
+        .updateElectricBill(widget.id, selectedElectricBill)
+        .then((value) {
       if (value == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -91,9 +94,12 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
             style: TextStyle(color: Colors.yellow),
           )),
         );
-        Navigator.pushNamed(context, ElectricBillDetailsScreen.routeName, arguments: widget.id);
+        Navigator.pushNamed(context, ElectricBillDetailsScreen.routeName,
+            arguments: widget.id);
       } else {
-        print('Adding error occurred');
+        if (kDebugMode) {
+          print('Adding error occurred');
+        }
       }
       return value;
     });
@@ -213,7 +219,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       ),
                       focusNode: _rateFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter rate';
@@ -239,7 +245,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       ),
                       focusNode: _dueFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter due';
@@ -265,7 +271,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       ),
                       focusNode: _advanceFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter advance';
@@ -291,7 +297,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                       ),
                       focusNode: _chargeFocusNode,
                       keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter charge';
@@ -402,7 +408,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
                           Colors.green,
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Update',
                       ),
                     ),

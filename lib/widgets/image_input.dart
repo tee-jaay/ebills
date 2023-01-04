@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart' as sysPaths;
+import 'package:path_provider/path_provider.dart' as sys_paths;
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
 import '../settings/constants.dart';
@@ -10,10 +11,10 @@ import '../services/cloudinary_services.dart';
 import '../providers/electric_bills.dart';
 
 class ImageInput extends StatefulWidget {
-  String id;
-  String imageUrl;
+  final   String id;
+  final   String imageUrl;
 
-  ImageInput({required this.id, required this.imageUrl, Key? key})
+  const ImageInput({required this.id, required this.imageUrl, Key? key})
       : super(key: key);
 
   @override
@@ -37,7 +38,7 @@ class _ImageInputState extends State<ImageInput> {
     setState(() {
       _storedImage = File(imageFile.path);
     });
-    final appDir = await sysPaths.getApplicationDocumentsDirectory();
+    final appDir = await sys_paths.getApplicationDocumentsDirectory();
     final fileName = path.basename(imageFile.path);
     final savedImage =
         await File(imageFile.path).copy('${appDir.path}/$fileName');
@@ -46,9 +47,9 @@ class _ImageInputState extends State<ImageInput> {
       _isLoading = true;
     });
     // ----- cloudinary
-    CloudinaryServices _cloudinaryServices = CloudinaryServices();
+    CloudinaryServices cloudinaryServices = CloudinaryServices();
     CloudinaryResponse response =
-        await _cloudinaryServices.uploadFile(savedImage, widget.id);
+        await cloudinaryServices.uploadFile(savedImage, widget.id);
     // ----- cloudinary
     if (response.isSuccessful) {
       String? imageUrl = response.secureUrl;
@@ -72,7 +73,9 @@ class _ImageInputState extends State<ImageInput> {
             )),
           );
         } else {
-          print('Adding error occurred');
+          if (kDebugMode) {
+            print('Adding error occurred');
+          }
         }
         return value;
       });

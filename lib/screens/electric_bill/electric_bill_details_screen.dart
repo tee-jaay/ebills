@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +51,7 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
               child: Column(
                 children: [
                   detailsKeyValue('Paid For:', loadedItem.title),
-                  DividerLine(spaceMedium, 2.0, Colors.black),
+                  const DividerLine(spaceMedium, 2.0, Colors.black),
                   detailsKeyValue(
                       'Collector', loadedItem.collectorName.toString()),
                   detailsKeyValue('Payer:', loadedItem.name.toString()),
@@ -73,7 +72,7 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
                       'Advance', '${loadedItem.advance.toString()} $currency'),
                   detailsKeyValue(
                       'Charge', '${loadedItem.charge.toString()} $currency'),
-                  DividerLine(spaceMedium, 1.0, Colors.black),
+                  const DividerLine(spaceMedium, 1.0, Colors.black),
                   detailsKeyValue(
                       'Amount', '${loadedItem.amount.toString()} $currency'),
                   const SizedBox(

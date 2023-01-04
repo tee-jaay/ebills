@@ -20,7 +20,7 @@ class ElectricBills with ChangeNotifier {
   int _httpResponseStatus = 0;
 
   // Declare local class for electric bills
-  List<ElectricBill> _electricBills = [];
+  final List<ElectricBill> _electricBills = [];
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
@@ -34,7 +34,7 @@ class ElectricBills with ChangeNotifier {
 
       // final decodedData = jsonDecode(response.body) as Map<String, dynamic>;
       final decodedData = jsonDecode(response.body) as List<dynamic>;
-      if (decodedData == null) {
+      if (decodedData.isEmpty) {
         return;
       }
 
@@ -62,7 +62,7 @@ class ElectricBills with ChangeNotifier {
       if (kDebugMode) {
         print(err);
       }
-      throw (err);
+      rethrow;
     }
   }
 
@@ -112,7 +112,7 @@ class ElectricBills with ChangeNotifier {
       _clearElectricBills();
       _httpResponseStatus = response.statusCode;
     } catch (err) {
-      throw err;
+      rethrow;
     }
     return _httpResponseStatus;
   }
