@@ -22,6 +22,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
+  bool _isLoading = false;
   late String _imageUrl = widget.imageUrl;
 
   Future<void> _takePicture() async {
@@ -41,6 +42,9 @@ class _ImageInputState extends State<ImageInput> {
     final savedImage =
         await File(imageFile.path).copy('${appDir.path}/$fileName');
 
+    setState(() {
+      _isLoading = true;
+    });
     // ----- cloudinary
     CloudinaryServices _cloudinaryServices = CloudinaryServices();
     CloudinaryResponse response =
@@ -73,6 +77,9 @@ class _ImageInputState extends State<ImageInput> {
         return value;
       });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -99,17 +106,28 @@ class _ImageInputState extends State<ImageInput> {
           width: spaceSmall,
         ),
         Expanded(
-          child: TextButton.icon(
-            onPressed: _takePicture,
-            icon: const Icon(Icons.camera),
-            label: Text(
-              'Take a picture',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ),
-        )
+          child: !_isLoading
+              ? TextButton.icon(
+                  onPressed: _takePicture,
+                  icon: const Icon(Icons.camera),
+                  label: Text(
+                    'Take a picture',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                )
+              : TextButton.icon(
+                  onPressed: null,
+                  icon: const Icon(Icons.hourglass_bottom),
+                  label: const Text(
+                    'Uploading...',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+        ),
       ],
     );
   }
