@@ -1,6 +1,6 @@
 # ebills
 
-A Flutter project for bills record.
+A scalable Flutter CRUD project with features.
 
 ## .env settings
 This project requires a .env file in the "assets/" directory with the following variables:

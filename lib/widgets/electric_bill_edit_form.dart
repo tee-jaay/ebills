@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'center_progress.dart';
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
 import '../screens/electric_bill/electric_bill_details_screen.dart';
@@ -108,9 +109,7 @@ class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const CenterProgress()
         : Form(
             key: _formKey,
             child: Padding(

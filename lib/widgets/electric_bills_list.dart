@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'center_progress.dart';
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
 import 'electric_bill_single.dart';
@@ -22,9 +23,7 @@ class ElectricBillsList extends StatelessWidget {
           future: _refreshEbills(context),
           builder: (ctx, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? const CenterProgress()
                   : RefreshIndicator(
                       onRefresh: () => _refreshEbills(context),
                       child: Consumer<ElectricBills>(
