@@ -32,14 +32,27 @@ class AuthServices with ChangeNotifier {
     return _httpResponseStatus;
   }
 
-  Future<String> signIn(String email, String password) async {
-    // await func
-    if (kDebugMode) {
-      print('signIn');
-      print(email);
-      print(password);
+  Future<int> signIn(Object obj) async {
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/auth/sign-in');
+
+      final response = await http.post(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
+      print(response.body);
+      _httpResponseStatus = response.statusCode;
+
+      // notify the listeners
+      // notifyListeners();
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
     }
-    return 'signIn';
+    return _httpResponseStatus;
   }
 
   Future<String> signOut() async {

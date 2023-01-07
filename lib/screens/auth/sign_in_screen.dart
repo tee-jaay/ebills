@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/auth_services.dart';
 import 'sign_up_screen.dart';
 import '../../settings/constants.dart';
 import '../../widgets/center_progress.dart';
@@ -29,10 +30,15 @@ class _SignInScreenState extends State<SignInScreen> {
     if (!isValid!) {
       return;
     }
-    print('handle submit');
-    print(_email);
-    print(_password);
-    //Todo:  validate sign in
+
+    dynamic newUserObj = {
+      "email": _email,
+      "password": _password
+    };
+
+    AuthServices authServices = AuthServices();
+    authServices.signIn(newUserObj);
+
     Navigator.pushNamed(context, ElectricBillListScreen.routeName);
   }
 
