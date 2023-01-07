@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'settings/constants.dart';
 
+import 'settings/app_routes.dart';
+import 'settings/constants.dart';
 import 'providers/electric_bills.dart';
-import 'screens/electric_bill/electric_bill_list_screen.dart';
-import 'screens/electric_bill/electric_bill_add_screen.dart';
-import 'screens/electric_bill/electric_bill_details_screen.dart';
-import 'screens/electric_bill/electric_bill_edit_screen.dart';
-import 'screens/auth/password_request_screen.dart';
 import 'screens/auth/sign_in_screen.dart';
-import 'screens/auth/sign_up_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");
@@ -33,21 +28,8 @@ class AppRoot extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SignUpScreen(),
-        routes: {
-          ElectricBillListScreen.routeName: (ctx) =>
-              const ElectricBillListScreen(),
-          ElectricBillDetailsScreen.routeName: (ctx) =>
-              const ElectricBillDetailsScreen(),
-          ElectricBillAddScreen.routeName: (ctx) =>
-              const ElectricBillAddScreen(),
-          ElectricBillEditScreen.routeName: (ctx) =>
-              const ElectricBillEditScreen(),
-          SignUpScreen.routeName: (ctx) => const SignUpScreen(),
-          SignInScreen.routeName: (ctx) => const SignInScreen(),
-          PasswordRequestScreen.routeName: (ctx) =>
-              const PasswordRequestScreen(),
-        },
+        home: const SignInScreen(),
+        routes: appRoutes,
       ),
     );
   }

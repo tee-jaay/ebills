@@ -1,26 +1,52 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-class AuthServices {
-  Future<String> signUp(String email, String username, String password) async {
-    // await func
-    print('signUp');
-    print(email);
-    print(username);
-    print(password);
-    return 'signUp';
+import '../settings/set_server_headers.dart';
+
+class AuthServices with ChangeNotifier {
+  int _httpResponseStatus = 0;
+
+  Future<int> signUp(Object obj) async {
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/auth/sign-up');
+
+      final response = await http.post(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
+      print(response.body);
+      _httpResponseStatus = response.statusCode;
+
+      // notify the listeners
+      // notifyListeners();
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+    return _httpResponseStatus;
   }
 
   Future<String> signIn(String email, String password) async {
     // await func
-    print('signIn');
-    print(email);
-    print(password);
+    if (kDebugMode) {
+      print('signIn');
+      print(email);
+      print(password);
+    }
     return 'signIn';
   }
 
   Future<String> signOut() async {
     // await func
-    print('signOut');
+    if (kDebugMode) {
+      print('signOut');
+    }
     return 'sign out';
   }
 }

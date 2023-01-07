@@ -34,9 +34,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
     _formKey.currentState?.save();
-    print('handle submit');
+
+    dynamic newUserObj = {
+      "email": _email,
+      "username": _username,
+      "password": _password
+    };
+
     AuthServices authServices = AuthServices();
-    authServices.signUp(_email, _username, _password);
+    authServices.signUp(newUserObj);
+
     //Todo:  validate sign up & sign in
     Navigator.pushNamed(context, ElectricBillListScreen.routeName);
   }
@@ -72,8 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'Email is required';
-                            }
-                            else if (!regExpEmail.hasMatch(value)) {
+                            } else if (!regExpEmail.hasMatch(value)) {
                               return 'Email is invalid';
                             } else {
                               return null;
@@ -96,12 +102,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           },
                           validator: (String? value) {
-                            if(value!.isEmpty){
+                            if (value!.isEmpty) {
                               return "Username is required";
-                            }
-                            else if(value.length < 4){
+                            } else if (value.length < 4) {
                               return "Username is too short";
-                            }else{
+                            } else {
                               return null;
                             }
                           },
@@ -124,8 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'Password is required';
-                            }
-                            else if (!regExpPassword.hasMatch(value)) {
+                            } else if (!regExpPassword.hasMatch(value)) {
                               return 'Password is weak';
                             } else {
                               return null;

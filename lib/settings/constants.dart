@@ -12,6 +12,8 @@ const String authSignUpScreenRouteName = '/auth_sign_up_screen';
 const String authSignInScreenRouteName = '/auth_sign_in_screen';
 const String authPasswordRequestScreenRouteName =
     '/auth_password_forgot_screen';
+const String authPasswordResetScreenRouteName =
+    '/auth_password_reset_screen';
 
 // Spaces
 const double spaceSmall = 4.0;
