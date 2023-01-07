@@ -24,7 +24,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final _passwordFocusNode = FocusNode();
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
+    final isValid = _formKey.currentState?.validate();
+    if (!isValid!) {
+      return;
+    }
     print('handle submit');
     print(_email);
     print(_password);
@@ -38,86 +42,102 @@ class _SignInScreenState extends State<SignInScreen> {
       body: _isLoading
           ? const CenterProgress()
           : Form(
-        key: _formKey,
-        child: Card(
-          margin: const EdgeInsets.all(0),
-          child: Padding(
-            padding: const EdgeInsets.all(spaceLarge),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    initialValue: '',
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      icon: Icon(Icons.message),
+              key: _formKey,
+              child: Card(
+                margin: const EdgeInsets.all(0),
+                child: Padding(
+                  padding: const EdgeInsets.all(spaceLarge),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          initialValue: '',
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(Icons.message),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _email = value;
+                            });
+                          },
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Email is required';
+                            } else if (!regExpEmail.hasMatch(value)) {
+                              return 'Email is invalid';
+                            } else {
+                              return null;
+                            }
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          onFieldSubmitted: (_) => FocusScope.of(context)
+                              .requestFocus(_passwordFocusNode),
+                        ),
+                        TextFormField(
+                          focusNode: _passwordFocusNode,
+                          initialValue: '',
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            icon: Icon(Icons.key),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value;
+                            });
+                          },
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Password is required';
+                            } else if (!regExpPassword.hasMatch(value)) {
+                              return 'Password is weak';
+                            } else {
+                              return null;
+                            }
+                          },
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                        ),
+                        const SizedBox(
+                          height: spaceExtraLarge,
+                        ),
+                        TextButton(
+                          onPressed: _handleSubmit,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                              Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: spaceExtraLarge,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, SignUpScreen.routeName);
+                            },
+                            child: const Text(
+                              'Don\'t have an account? Sign Up here',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            )),
+                      ],
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _email = value;
-                      });
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    onFieldSubmitted: (_) => FocusScope.of(context)
-                        .requestFocus(_passwordFocusNode),
                   ),
-                  TextFormField(
-                    focusNode: _passwordFocusNode,
-                    initialValue: '',
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      icon: Icon(Icons.key),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _password = value;
-                      });
-                    },
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                  ),
-                  const SizedBox(
-                    height: spaceExtraLarge,
-                  ),
-                  TextButton(
-                    onPressed: _handleSubmit,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(
-                        Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    height: spaceExtraLarge,
-                  ),
-
-                  GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, SignUpScreen.routeName);
-                  },
-                  child: const Text(
-                      'Don\'t have an account? Sign Up here',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                    ),
-                  )
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

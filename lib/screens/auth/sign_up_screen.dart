@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/auth_services.dart';
 import '../../widgets/center_progress.dart';
 import 'sign_in_screen.dart';
 import '../../settings/constants.dart';
@@ -17,7 +18,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _isLoading = false;
+  bool _isLoading = false;
 
   late String _email = '';
   late String _username = '';
@@ -27,11 +28,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _usernameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
+    final isValid = _formKey.currentState?.validate();
+    if (!isValid!) {
+      return;
+    }
+    _formKey.currentState?.save();
     print('handle submit');
-    print(_email);
-    print(_username);
-    print(_password);
+    AuthServices authServices = AuthServices();
+    authServices.signUp(_email, _username, _password);
     //Todo:  validate sign up & sign in
     Navigator.pushNamed(context, ElectricBillListScreen.routeName);
   }
@@ -64,6 +69,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               _email = value;
                             });
                           },
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Email is required';
+                            }
+                            else if (!regExpEmail.hasMatch(value)) {
+                              return 'Email is invalid';
+                            } else {
+                              return null;
+                            }
+                          },
                           keyboardType: TextInputType.emailAddress,
                           onFieldSubmitted: (_) => FocusScope.of(context)
                               .requestFocus(_usernameFocusNode),
@@ -80,6 +95,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               _username = value;
                             });
                           },
+                          validator: (String? value) {
+                            if(value!.isEmpty){
+                              return "Username is required";
+                            }
+                            else if(value.length < 4){
+                              return "Username is too short";
+                            }else{
+                              return null;
+                            }
+                          },
                           keyboardType: TextInputType.text,
                           onFieldSubmitted: (_) => FocusScope.of(context)
                               .requestFocus(_passwordFocusNode),
@@ -95,6 +120,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             setState(() {
                               _password = value;
                             });
+                          },
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Password is required';
+                            }
+                            else if (!regExpPassword.hasMatch(value)) {
+                              return 'Password is weak';
+                            } else {
+                              return null;
+                            }
                           },
                           keyboardType: TextInputType.text,
                           obscureText: true,
@@ -116,22 +151,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(
                           height: spaceExtraLarge,
                         ),
-
                         GestureDetector(
-                            onTap: (){
-                              Navigator.pushNamed(context, SignInScreen.routeName);
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, SignInScreen.routeName);
                             },
                             child: const Text(
                               'Already have an account? Sign In here',
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
                               ),
-                            )
-                        ),
+                            )),
                       ],
                     ),
                   ),
