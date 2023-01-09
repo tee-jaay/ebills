@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/auth_services.dart';
 import '../../widgets/build_submit_button.dart';
+import '../../widgets/show_snack_bar_msg.dart';
 import 'sign_up_screen.dart';
 import '../../settings/constants.dart';
 import '../../widgets/center_progress.dart';
@@ -44,10 +45,11 @@ class _SignInScreenState extends State<SignInScreen> {
         if (value == 200) {
           Navigator.pushNamed(context, ElectricBillListScreen.routeName);
         } else {
+          ShowSnackBarMsg.showSnackBarMsg(
+              context, 'Sign in failed', Colors.orange);
           setState(() {
             _isFetching = false;
           });
-          print('Sign in failed');
         }
       }).catchError((err) {
         setState(() {

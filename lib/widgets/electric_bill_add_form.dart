@@ -5,6 +5,7 @@ import 'center_progress.dart';
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
 import '../screens/electric_bill/electric_bill_list_screen.dart';
+import 'show_snack_bar_msg.dart';
 
 class ElectricBillAddForm extends StatefulWidget {
   const ElectricBillAddForm({Key? key}) : super(key: key);
@@ -61,13 +62,8 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
     ElectricBills electricBills = ElectricBills();
     electricBills.addElectricBill(newElectricBill).then((value) {
       if (value == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-            'Entry add success',
-            style: TextStyle(color: Colors.green),
-          )),
-        );
+        ShowSnackBarMsg.showSnackBarMsg(
+            context, 'Add success', Colors.green);
         Navigator.pushNamed(context, ElectricBillListScreen.routeName);
       } else {
         if (kDebugMode) {

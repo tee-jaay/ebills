@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as sys_paths;
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
+import 'show_snack_bar_msg.dart';
 import '../settings/constants.dart';
 import '../services/cloudinary_services.dart';
 import '../providers/electric_bills.dart';
@@ -65,13 +66,7 @@ class _ImageInputState extends State<ImageInput> {
           .updateElectricBill(widget.id, selectedElectricBill)
           .then((value) {
         if (value == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text(
-              'Image upload success',
-              style: TextStyle(color: Colors.greenAccent),
-            )),
-          );
+          ShowSnackBarMsg.showSnackBarMsg(context,'Image upload success', Colors.green);
         } else {
           if (kDebugMode) {
             print('Adding error occurred');

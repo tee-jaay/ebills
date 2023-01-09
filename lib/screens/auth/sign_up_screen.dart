@@ -6,6 +6,7 @@ import '../../widgets/center_progress.dart';
 import 'sign_in_screen.dart';
 import '../../settings/constants.dart';
 import '../electric_bill/electric_bill_list_screen.dart';
+import '../../widgets/show_snack_bar_msg.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = authSignUpScreenRouteName;
@@ -53,10 +54,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (value == 201) {
           Navigator.pushNamed(context, ElectricBillListScreen.routeName);
         } else {
+          ShowSnackBarMsg.showSnackBarMsg(
+              context, 'Sign up failed', Colors.orange);
           setState(() {
             _isFetching = false;
           });
-          print('Sign up failed');
         }
       }).catchError((err) {
         setState(() {
