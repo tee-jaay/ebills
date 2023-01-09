@@ -1,4 +1,3 @@
-import 'package:ebills/providers/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'settings/app_routes.dart';
 import 'settings/constants.dart';
 import 'providers/electric_bills.dart';
+import 'providers/authentication.dart';
+import 'screens/electric_bill/electric_bill_list_screen.dart';
 import 'screens/auth/sign_in_screen.dart';
 
 void main() async {
@@ -24,14 +25,18 @@ class AppRoot extends StatelessWidget {
         ChangeNotifierProvider.value(value: ElectricBills()),
         ChangeNotifierProvider.value(value: Authentication()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: appName,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: Consumer<Authentication>(
+        builder: (ctx, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: appName,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: auth.isAuthenticated
+              ? const ElectricBillListScreen()
+              : const SignInScreen(),
+          routes: appRoutes,
         ),
-        home: const SignInScreen(),
-        routes: appRoutes,
       ),
     );
   }

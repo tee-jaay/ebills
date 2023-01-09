@@ -43,6 +43,7 @@ class AuthServices extends Authentication {
         "content-type": "application/json",
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
+
       authenticateUser(response);
 
       _httpResponseStatus = response.statusCode;
