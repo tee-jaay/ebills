@@ -38,5 +38,4 @@ class Authentication with ChangeNotifier{
       print("isAuthenticated ==== ");
     }
   }
-
 }

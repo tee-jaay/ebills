@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_services.dart';
+import '../../widgets/build_submit_button.dart';
 import 'sign_up_screen.dart';
 import '../../settings/constants.dart';
 import '../../widgets/center_progress.dart';
@@ -19,6 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _isLoading = false;
+  bool _isFetching = false;
 
   late String _email = '';
   late String _password = '';
@@ -33,10 +35,29 @@ class _SignInScreenState extends State<SignInScreen> {
 
     dynamic newUserObj = {"email": _email, "password": _password};
 
-    AuthServices authServices = AuthServices();
-    authServices.signIn(newUserObj);
-
-    Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+    try {
+      setState(() {
+        _isFetching = true;
+      });
+      AuthServices authServices = AuthServices();
+      await authServices.signIn(newUserObj).then((value) {
+        if (value == 200) {
+          Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+        } else {
+          setState(() {
+            _isFetching = false;
+          });
+          print('Sign in failed');
+        }
+      }).catchError((err) {
+        setState(() {
+          _isFetching = false;
+        });
+        print(err);
+      });
+    } catch (err) {
+      rethrow;
+    }
   }
 
   @override
@@ -107,46 +128,47 @@ class _SignInScreenState extends State<SignInScreen> {
                         const SizedBox(
                           height: spaceExtraLarge,
                         ),
-                        TextButton(
-                          onPressed: _handleSubmit,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        _isFetching
+                            ? BuildSubmitButton(
+                                title: 'Sign In...',
+                                bgColor: Colors.white,
+                                txtColor: Colors.black45,
+                                onPress: null)
+                            : BuildSubmitButton(
+                                title: 'Sign In',
+                                bgColor: Colors.blue,
+                                txtColor: Colors.white,
+                                onPress: _handleSubmit),
                         const SizedBox(
                           height: spaceExtraLarge,
                         ),
                         GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, SignUpScreen.routeName);
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                  text: 'Don\'t have an account?',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: ' Sign Up',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
+                          onTap: _isFetching
+                              ? null
+                              : () {
+                                  Navigator.pushNamed(
+                                      context, SignUpScreen.routeName);
+                                },
+                          child: RichText(
+                            text: TextSpan(
+                                text: 'Don\'t have an account?',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: ' Sign Up',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: _isFetching
+                                          ? Colors.grey
+                                          : Theme.of(context).primaryColor,
                                     ),
-                                    const TextSpan(text: ' here'),
-                                  ]),
-                            ),
+                                  ),
+                                  const TextSpan(text: ' here'),
+                                ]),
+                          ),
                         ),
                       ],
                     ),

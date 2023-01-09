@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../settings/set_server_headers.dart';
 import '../providers/authentication.dart';
 
-class AuthServices {
+class AuthServices extends Authentication {
   int _httpResponseStatus = 0;
 
   Future<int> signUp(Object obj) async {
@@ -20,8 +20,7 @@ class AuthServices {
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
 
-      Authentication userAuthentication = Authentication();
-      userAuthentication.authenticateUser(response);
+      authenticateUser(response);
 
       _httpResponseStatus = response.statusCode;
 
@@ -44,8 +43,7 @@ class AuthServices {
         "content-type": "application/json",
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
-      Authentication userAuthentication = Authentication();
-      userAuthentication.authenticateUser(response);
+      authenticateUser(response);
 
       _httpResponseStatus = response.statusCode;
 
@@ -60,14 +58,11 @@ class AuthServices {
   }
 
   Future<String> signOut() async {
-    Authentication userAuthentication = Authentication();
-    userAuthentication.isAuthenticated = false;
+    isAuthenticated = false;
     //Todo: Remove accessToken from server
     if (kDebugMode) {
       print('signOut');
     }
     return 'sign out';
   }
-
-
 }

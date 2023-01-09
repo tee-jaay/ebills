@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_services.dart';
+import '../../widgets/build_submit_button.dart';
 import '../../widgets/center_progress.dart';
 import 'sign_in_screen.dart';
 import '../../settings/constants.dart';
@@ -19,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
+  bool _isFetching = false;
 
   late String _email = '';
   late String _username = '';
@@ -29,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordFocusNode = FocusNode();
 
   Future<void> _handleSubmit() async {
+    // Validation
     final isValid = _formKey.currentState?.validate();
     if (!isValid!) {
       return;
@@ -41,11 +44,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "password": _password
     };
 
-    AuthServices authServices = AuthServices();
-    authServices.signUp(newUserObj);
-
-    //Todo:  validate sign up & sign in
-    Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+    try {
+      setState(() {
+        _isFetching = true;
+      });
+      AuthServices authServices = AuthServices();
+      await authServices.signUp(newUserObj).then((value) {
+        if (value == 201) {
+          Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+        } else {
+          setState(() {
+            _isFetching = false;
+          });
+          print('Sign up failed');
+        }
+      }).catchError((err) {
+        setState(() {
+          _isFetching = false;
+        });
+        print(err);
+      });
+    } catch (err) {
+      rethrow;
+    }
   }
 
   @override
@@ -141,28 +162,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SizedBox(
                           height: spaceExtraLarge,
                         ),
-                        TextButton(
-                          onPressed: _handleSubmit,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).primaryColorDark,
-                            ),
-                          ),
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        _isFetching
+                            ? BuildSubmitButton(
+                                title: 'Sign Up...',
+                                bgColor: Colors.white,
+                                txtColor: Colors.black45,
+                                onPress: null)
+                            : BuildSubmitButton(
+                                title: 'Sign Up',
+                                bgColor: Colors.blue,
+                                txtColor: Colors.white,
+                                onPress: _handleSubmit),
                         const SizedBox(
                           height: spaceExtraLarge,
                         ),
                         GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, SignInScreen.routeName);
-                            },
+                          onTap: _isFetching
+                              ? null
+                              : () {
+                                  Navigator.pushNamed(
+                                      context, SignInScreen.routeName);
+                                },
                           child: RichText(
                             text: TextSpan(
                                 text: 'Already have an account?',
@@ -175,7 +195,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     text: ' Sign In',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
+                                      color: _isFetching
+                                          ? Colors.grey
+                                          : Theme.of(context).primaryColor,
                                     ),
                                   ),
                                   const TextSpan(text: ' here'),
