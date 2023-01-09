@@ -1,5 +1,3 @@
-import 'package:ebills/models/user.dart';
-import 'package:ebills/providers/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +6,10 @@ import 'settings/app_routes.dart';
 import 'settings/constants.dart';
 import 'providers/electric_bills.dart';
 import 'providers/authentication.dart';
+import 'providers/user_data.dart';
 import 'screens/electric_bill/electric_bill_list_screen.dart';
 import 'screens/auth/sign_in_screen.dart';
+import 'models/user.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");

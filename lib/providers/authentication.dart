@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ class Authentication with ChangeNotifier {
   User userData = User(id: '', email: '', username: '', accessToken: '');
   bool _isAuthenticated = false;
   String _token = '';
+  late Timer? _authTimer;
 
   String get token {
     //Todo: Validate token expiry
@@ -47,6 +49,7 @@ class Authentication with ChangeNotifier {
         userData.accessToken = decodedBody["accessToken"].toString();
         isAuthenticated = true;
       }
+      _autoSignOut();
     }
     return isAuthenticated = false;
   }
@@ -57,5 +60,11 @@ class Authentication with ChangeNotifier {
     userData.username = "";
     userData.accessToken = "";
     isAuthenticated = false;
+  }
+
+  void _autoSignOut() {
+    DateTime? expiryDate = Jwt.getExpiryDate(token);
+    final timeToExpiry = expiryDate!.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToExpiry), unAuthenticateUser);
   }
 }

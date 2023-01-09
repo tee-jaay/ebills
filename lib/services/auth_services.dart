@@ -52,7 +52,7 @@ class AuthServices extends Authentication {
     return _httpResponseStatus;
   }
 
-  Future<String> signOut() async {
+  Future<String> signOut(String accessToken) async {
     unAuthenticateUser();
     //Todo: Remove accessToken from server
     if (kDebugMode) {
