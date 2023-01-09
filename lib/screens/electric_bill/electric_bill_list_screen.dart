@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/auth_services.dart';
 import '../../settings/constants.dart';
 import 'electric_bill_add_screen.dart';
 import '../../widgets/electric_bills_list.dart';
@@ -11,6 +13,8 @@ class ElectricBillListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var isAuthenticated = Provider.of<AuthServices>(context).isAuthenticated;
+    // print(isAuthenticated);
     return Scaffold(
       appBar: AppBar(
         title: const Text(electricBillsListScreenTitle),

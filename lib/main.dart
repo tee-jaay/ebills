@@ -1,9 +1,11 @@
+import 'package:ebills/providers/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'settings/app_routes.dart';
 import 'settings/constants.dart';
+import 'services/auth_services.dart';
 import 'providers/electric_bills.dart';
 import 'screens/auth/sign_in_screen.dart';
 
@@ -21,6 +23,7 @@ class AppRoot extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: ElectricBills()),
+        ChangeNotifierProvider.value(value: Authentication()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

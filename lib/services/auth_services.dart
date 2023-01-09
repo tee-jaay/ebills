@@ -5,21 +5,24 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../settings/set_server_headers.dart';
+import '../providers/authentication.dart';
 
-class AuthServices with ChangeNotifier {
+class AuthServices {
   int _httpResponseStatus = 0;
 
   Future<int> signUp(Object obj) async {
     try {
-      var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/auth/sign-up');
+      var url = Uri.parse('${dotenv.get("serverUrl")}/auth/sign-up');
 
       final response = await http.post(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
         "content-type": "application/json",
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
-      print(response.body);
+
+      Authentication userAuthentication = Authentication();
+      userAuthentication.authenticateUser(response);
+
       _httpResponseStatus = response.statusCode;
 
       // notify the listeners
@@ -34,15 +37,16 @@ class AuthServices with ChangeNotifier {
 
   Future<int> signIn(Object obj) async {
     try {
-      var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/auth/sign-in');
+      var url = Uri.parse('${dotenv.get("serverUrl")}/auth/sign-in');
 
       final response = await http.post(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
         "content-type": "application/json",
         "Authorization": SetServerHeaders.basicAuthHeaders(),
       });
-      print(response.body);
+      Authentication userAuthentication = Authentication();
+      userAuthentication.authenticateUser(response);
+
       _httpResponseStatus = response.statusCode;
 
       // notify the listeners
@@ -56,10 +60,14 @@ class AuthServices with ChangeNotifier {
   }
 
   Future<String> signOut() async {
-    // await func
+    Authentication userAuthentication = Authentication();
+    userAuthentication.isAuthenticated = false;
+    //Todo: Remove accessToken from server
     if (kDebugMode) {
       print('signOut');
     }
     return 'sign out';
   }
+
+
 }

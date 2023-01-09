@@ -163,12 +163,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Navigator.pushNamed(
                                   context, SignInScreen.routeName);
                             },
-                            child: const Text(
-                              'Already have an account? Sign In here',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                              ),
-                            )),
+                          child: RichText(
+                            text: TextSpan(
+                                text: 'Already have an account?',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: ' Sign In',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  const TextSpan(text: ' here'),
+                                ]),
+                          ),
+                        ),
                       ],
                     ),
                   ),

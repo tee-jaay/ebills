@@ -31,10 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
 
-    dynamic newUserObj = {
-      "email": _email,
-      "password": _password
-    };
+    dynamic newUserObj = {"email": _email, "password": _password};
 
     AuthServices authServices = AuthServices();
     authServices.signIn(newUserObj);
@@ -132,12 +129,25 @@ class _SignInScreenState extends State<SignInScreen> {
                               Navigator.pushNamed(
                                   context, SignUpScreen.routeName);
                             },
-                            child: const Text(
-                              'Don\'t have an account? Sign Up here',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                              ),
-                            )),
+                            child: RichText(
+                              text: TextSpan(
+                                  text: 'Don\'t have an account?',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: ' Sign Up',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                    const TextSpan(text: ' here'),
+                                  ]),
+                            ),
+                        ),
                       ],
                     ),
                   ),
