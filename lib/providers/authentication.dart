@@ -3,7 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decode/jwt_decode.dart';
 
+import '../models/user.dart';
+
 class Authentication with ChangeNotifier {
+  User userData = User(id: '', email: '', username: '', accessToken: '');
   bool _isAuthenticated = false;
   String _token = '';
 
@@ -33,21 +36,26 @@ class Authentication with ChangeNotifier {
   bool authenticateUser(http.Response response) {
     final decodedBody = jsonDecode(response.body);
     if (decodedBody["accessToken"] != null) {
+      // Authenticate if token is not expired
       _token = decodedBody["accessToken"];
-      // Check if token is expired
       bool isExpired = Jwt.isExpired(token);
       if (!isExpired) {
-        // Authenticate if token is not expired
+        // Set authenticated user data
+        userData.id = decodedBody["id"].toString();
+        userData.email = decodedBody["email"].toString();
+        userData.username = decodedBody["username"].toString();
+        userData.accessToken = decodedBody["accessToken"].toString();
         isAuthenticated = true;
       }
     }
     return isAuthenticated = false;
   }
 
-  void unAuthenticateUser(http.Response response) {
-    final decodedBody = jsonDecode(response.body);
-    if (decodedBody["accessToken"] != null) {
-      isAuthenticated = false;
-    }
+  void unAuthenticateUser() {
+    userData.id = "";
+    userData.email = "";
+    userData.username = "";
+    userData.accessToken = "";
+    isAuthenticated = false;
   }
 }

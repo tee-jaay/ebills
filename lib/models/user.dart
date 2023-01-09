@@ -9,5 +9,4 @@ class User {
   String email;
   String username;
   String accessToken;
-  bool isAuthenticated = false;
 }

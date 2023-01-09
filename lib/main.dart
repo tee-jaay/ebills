@@ -1,3 +1,5 @@
+import 'package:ebills/models/user.dart';
+import 'package:ebills/providers/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +24,8 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: ElectricBills()),
         ChangeNotifierProvider.value(value: Authentication()),
+        ChangeNotifierProvider.value(value: ElectricBills()),
       ],
       child: Consumer<Authentication>(
         builder: (ctx, auth, _) => MaterialApp(

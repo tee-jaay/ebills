@@ -23,9 +23,6 @@ class AuthServices extends Authentication {
       authenticateUser(response);
 
       _httpResponseStatus = response.statusCode;
-
-      // notify the listeners
-      // notifyListeners();
     } catch (err) {
       if (kDebugMode) {
         print(err);
@@ -47,9 +44,6 @@ class AuthServices extends Authentication {
       authenticateUser(response);
 
       _httpResponseStatus = response.statusCode;
-
-      // notify the listeners
-      // notifyListeners();
     } catch (err) {
       if (kDebugMode) {
         print(err);
@@ -59,7 +53,7 @@ class AuthServices extends Authentication {
   }
 
   Future<String> signOut() async {
-    isAuthenticated = false;
+    unAuthenticateUser();
     //Todo: Remove accessToken from server
     if (kDebugMode) {
       print('signOut');
