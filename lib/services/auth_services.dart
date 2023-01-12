@@ -87,7 +87,7 @@ class AuthServices with ChangeNotifier {
     return _httpResponseStatus;
   }
 
-  Future<void> signOut(String accessToken) async {
+  void signOut(){
     unAuthenticateUser();
     //Todo: Remove accessToken from server
     if (kDebugMode) {

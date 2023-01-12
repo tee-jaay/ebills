@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../settings/constants.dart';
 import '../../providers/electric_bills.dart';
+import '../../widgets/sign_out_btn.dart';
 import 'electric_bill_edit_screen.dart';
 import '../../widgets/details_key_value.dart';
 import '../../widgets/divider_line.dart';
@@ -28,17 +29,8 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(electricBillDetailsScreenTitle),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(ElectricBillEditScreen.routeName, arguments: id);
-            },
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-          ),
+        actions: const [
+          SignOutBtn(),
         ],
       ),
       body: SizedBox(
@@ -87,6 +79,14 @@ class _ElectricBillDetailsScreenState extends State<ElectricBillDetailsScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context)
+              .pushNamed(ElectricBillEditScreen.routeName, arguments: id);
+        },
       ),
     );
   }

@@ -1,14 +1,14 @@
-import 'package:ebills/providers/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../settings/constants.dart';
 import '../../services/auth_services.dart';
+import '../../providers/authentication.dart';
 import '../../widgets/build_submit_button.dart';
 import '../../widgets/show_snack_bar_msg.dart';
 import '../../widgets/center_progress.dart';
 import 'sign_up_screen.dart';
-import '../../settings/constants.dart';
 import '../electric_bill/electric_bill_list_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -60,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthServices>(context, listen: true);
 
-    return Scaffold(
+    return authProvider.isAuth ? ElectricBillListScreen() : Scaffold(
       body: Form(
         key: _formKey,
         child: Card(
@@ -110,14 +110,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       });
                     },
                     validator: (String? value) {
-                      // if (value!.isEmpty) {
-                      //   return 'Password is required';
-                      // } else if (!regExpPassword.hasMatch(value)) {
-                      //   return 'Password is weak';
-                      // } else {
-                      //   return null;
-                      // }
-                      return null;
+                      if (value!.isEmpty) {
+                        return 'Password is required';
+                      } else if (!regExpPassword.hasMatch(value)) {
+                        return 'Password is weak';
+                      } else {
+                        return null;
+                      }
                     },
                     keyboardType: TextInputType.text,
                     obscureText: true,

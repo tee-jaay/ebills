@@ -17,7 +17,7 @@ class ElectricBills with ChangeNotifier {
   Future<void> fetchAndSetAllElectricBills() async {
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/index');
+          '${dotenv.get("serverUrl")}/electric-bills/index');
 
       final response = await http.get(url, headers: {
         "Authorization": SetServerHeaders.basicAuthHeaders(),
@@ -62,7 +62,7 @@ class ElectricBills with ChangeNotifier {
     _clearElectricBills();
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/store');
+          '${dotenv.get("serverUrl")}/electric-bills/store');
 
       final response = await http.post(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
@@ -94,7 +94,7 @@ class ElectricBills with ChangeNotifier {
     }
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5000')}/electric-bills/update/$id');
+          '${dotenv.get("serverUrl")}/electric-bills/update/$id');
       final response = await http.put(url, body: jsonEncode(obj), headers: {
         "accept": "application/json",
         "content-type": "application/json",
@@ -117,7 +117,10 @@ class ElectricBills with ChangeNotifier {
   }
 
   List<ElectricBill> get electricBills {
-    return [..._electricBills.reversed];
+    List.from(Set.from(_electricBills));
+    List<ElectricBill> _electricBillsReversed = _electricBills.reversed.toList();
+
+    return [..._electricBillsReversed];
   }
 
   void _clearElectricBills() {

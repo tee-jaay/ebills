@@ -1,3 +1,4 @@
+import 'package:ebills/widgets/sign_out_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,25 +21,26 @@ class ElectricBillListScreen extends StatefulWidget {
 class _ElectricBillListScreenState extends State<ElectricBillListScreen> {
   @override
   Widget build(BuildContext context) {
-    var authProvider = Provider.of<AuthServices>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(electricBillsListScreenTitle),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(ElectricBillAddScreen.routeName);
-            },
-            icon: const Icon(
-              Icons.add,
-              color: Colors.white,
+    var authProvider = Provider.of<AuthServices>(context, listen: true);
+
+    return authProvider.isAuth
+        ? Scaffold(
+            appBar: AppBar(
+              title: const Text(electricBillsListScreenTitle),
+              actions: const [
+                SignOutBtn(),
+              ],
             ),
-          ),
-        ],
-      ),
-      body: authProvider.isAuth
-          ? const ElectricBillsList()
-          : const SignInScreen(),
-    );
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(ElectricBillAddScreen.routeName);
+              },
+            ),
+            body: const ElectricBillsList(),
+          )
+        : const SignInScreen();
   }
 }

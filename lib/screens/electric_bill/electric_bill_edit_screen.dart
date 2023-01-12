@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../widgets/electric_bill_edit_form.dart';
 import '../../providers/electric_bills.dart';
 import '../../settings/constants.dart';
+import '../../widgets/sign_out_btn.dart';
 
 class ElectricBillEditScreen extends StatelessWidget {
   static const routeName = electricBillEditScreenRouteName;
@@ -18,6 +19,9 @@ class ElectricBillEditScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(electricBillEditScreenTitle),
+        actions: const [
+          SignOutBtn(),
+        ],
       ),
       body: Card(
         margin: const EdgeInsets.all(spaceSmall),
