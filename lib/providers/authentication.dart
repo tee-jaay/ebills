@@ -7,10 +7,21 @@ import 'package:jwt_decode/jwt_decode.dart';
 import '../models/user.dart';
 
 class Authentication with ChangeNotifier {
-  User userData = User(id: '', email: '', username: '', accessToken: '');
-  bool _isAuthenticated = false;
+  User userData = User(
+      id: '', email: '', username: '', accessToken: '', isAuthenticated: false);
+  bool _isAuth = false;
   String _token = '';
   late Timer? _authTimer;
+
+  bool get isAuth => _isAuth;
+
+  set isAuth(bool value) {
+    _isAuth = value;
+    notifyListeners();
+    print('********** Setter _isAuth **********');
+    print(_isAuth);
+    print('********** Setter _isAuth **********');
+  }
 
   String get token {
     //Todo: Validate token expiry
@@ -20,46 +31,39 @@ class Authentication with ChangeNotifier {
     return '';
   }
 
-  bool get isAuthenticated => _isAuthenticated;
-
-  set isAuthenticated(bool value) {
-    _isAuthenticated = value;
-    notifyListeners();
-  }
-
-  bool getIsAuthenticated() {
-    return isAuthenticated;
-  }
-
-  void setIsAuthenticated(bool value) {
-    isAuthenticated = value;
-  }
-
-  bool authenticateUser(http.Response response) {
+  Future<void> authenticateUser(http.Response response) async {
     final decodedBody = jsonDecode(response.body);
-    if (decodedBody["accessToken"] != null) {
-      // Authenticate if token is not expired
-      _token = decodedBody["accessToken"];
-      bool isExpired = Jwt.isExpired(token);
-      if (!isExpired) {
-        // Set authenticated user data
-        userData.id = decodedBody["id"].toString();
-        userData.email = decodedBody["email"].toString();
-        userData.username = decodedBody["username"].toString();
-        userData.accessToken = decodedBody["accessToken"].toString();
-        isAuthenticated = true;
-      }
+
+    // Authenticate if token is not expired
+    _token = decodedBody["accessToken"];
+    bool isExpired = Jwt.isExpired(token);
+    print("isExpired =========");
+    print(isExpired);
+    print("isExpired =========");
+    //Todo: fix expiry in server side
+    if (isExpired) {
+      // Set authenticated user data
+      userData.id = decodedBody["id"].toString();
+      userData.email = decodedBody["email"].toString();
+      userData.username = decodedBody["username"].toString();
+      userData.accessToken = decodedBody["accessToken"].toString();
+
+      isAuth = true;
+
       _autoSignOut();
     }
-    return isAuthenticated = false;
   }
 
   void unAuthenticateUser() {
+    isAuth = false;
+    _clearUserData();
+  }
+
+  void _clearUserData() {
     userData.id = "";
     userData.email = "";
     userData.username = "";
     userData.accessToken = "";
-    isAuthenticated = false;
   }
 
   void _autoSignOut() {

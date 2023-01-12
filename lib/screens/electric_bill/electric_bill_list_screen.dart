@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth_services.dart';
+import '../auth/sign_in_screen.dart';
+import '../../providers/authentication.dart';
 import '../../settings/constants.dart';
 import 'electric_bill_add_screen.dart';
 import '../../widgets/electric_bills_list.dart';
 
-class ElectricBillListScreen extends StatelessWidget {
+class ElectricBillListScreen extends StatefulWidget {
   static const routeName = electricBillsListScreenRouteName;
 
-  const ElectricBillListScreen({Key? key}) : super(key: key);
+  ElectricBillListScreen({Key? key}) : super(key: key);
 
   @override
+  State<ElectricBillListScreen> createState() => _ElectricBillListScreenState();
+}
+
+class _ElectricBillListScreenState extends State<ElectricBillListScreen> {
+  @override
   Widget build(BuildContext context) {
-    // var isAuthenticated = Provider.of<AuthServices>(context).isAuthenticated;
-    // print(isAuthenticated);
+    var authProvider = Provider.of<AuthServices>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text(electricBillsListScreenTitle),
@@ -30,7 +36,9 @@ class ElectricBillListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const ElectricBillsList(),
+      body: authProvider.isAuth
+          ? const ElectricBillsList()
+          : const SignInScreen(),
     );
   }
 }

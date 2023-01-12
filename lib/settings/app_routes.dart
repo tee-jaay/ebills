@@ -8,7 +8,7 @@ import '../screens/electric_bill/electric_bill_edit_screen.dart';
 import '../screens/electric_bill/electric_bill_list_screen.dart';
 
 var appRoutes = {
-  ElectricBillListScreen.routeName: (ctx) => const ElectricBillListScreen(),
+  ElectricBillListScreen.routeName: (ctx) => ElectricBillListScreen(),
   ElectricBillDetailsScreen.routeName: (ctx) =>
       const ElectricBillDetailsScreen(),
   ElectricBillAddScreen.routeName: (ctx) => const ElectricBillAddScreen(),
