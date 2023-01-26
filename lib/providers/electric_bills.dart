@@ -15,6 +15,7 @@ class ElectricBills with ChangeNotifier {
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
+    _clearElectricBills();
     try {
       var url = Uri.parse(
           '${dotenv.get("serverUrl")}/electric-bills/index');
@@ -72,7 +73,7 @@ class ElectricBills with ChangeNotifier {
       _httpResponseStatus = response.statusCode;
 
       // notify the listeners
-      // notifyListeners();
+      notifyListeners();
     } catch (err) {
       if (kDebugMode) {
         print(err);

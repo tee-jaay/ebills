@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../screens/auth/password_request_screen.dart';
 import '../screens/auth/password_reset_screen.dart';
 import '../screens/auth/sign_in_screen.dart';
@@ -7,7 +9,7 @@ import '../screens/electric_bill/electric_bill_details_screen.dart';
 import '../screens/electric_bill/electric_bill_edit_screen.dart';
 import '../screens/electric_bill/electric_bill_list_screen.dart';
 
-var appRoutes = {
+final Map<String, WidgetBuilder> appRoutes = {
   ElectricBillListScreen.routeName: (ctx) => ElectricBillListScreen(),
   ElectricBillDetailsScreen.routeName: (ctx) =>
       const ElectricBillDetailsScreen(),
