@@ -3,40 +3,39 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-//import 'package:intl/intl.dart';
 
 import '../models/electric_bill.dart';
+import '../settings/set_server_headers.dart';
 
 class ElectricBills with ChangeNotifier {
+  int _httpResponseStatus = 0;
+
   // Declare local class for electric bills
   final List<ElectricBill> _electricBills = [];
 
   // Fetch and set electric bills data
   Future<void> fetchAndSetAllElectricBills() async {
+    _clearElectricBills();
     try {
       var url = Uri.parse(
-          '${dotenv.get("serverUrl", fallback: 'http://127.0.0.1:5555')}/ebills/index');
+          '${dotenv.get("serverUrl")}/electric-bills/index');
 
-      final response = await http.get(url);
+      final response = await http.get(url, headers: {
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
 
-      if (response.body.isEmpty) {
-        if (kDebugMode) {
-          print('Empty data');
-        }
-        return;
-      }
-
+      // final decodedData = jsonDecode(response.body) as Map<String, dynamic>;
       final decodedData = jsonDecode(response.body) as List<dynamic>;
-      if (kDebugMode) {
-        print(decodedData);
+      if (decodedData.isEmpty) {
+        return;
       }
 
       for (var element in decodedData) {
         _electricBills.add(ElectricBill(
-          id:element["id"],
+          id: element["id"],
           title: element["title"],
           unitNow: element["unitNow"].toString(),
-          rate: element["unitRate"].toString(),
+          unitRate: element["unitRate"].toString(),
           amount: element["amount"].toString(),
           name: element["name"].toString(),
           collectorName: element["collectorName"].toString(),
@@ -44,7 +43,9 @@ class ElectricBills with ChangeNotifier {
           charge: element["charge"].toString(),
           due: element["due"].toString(),
           advance: element["advance"].toString(),
-          // paidDate: DateFormat('yy-MM').format(element["paidDate"]),
+          paidDate: element["paidDate"].toString(),
+          imageUrl: element["imageUrl"].toString(),
+          fileUrl: element["fileUrl"].toString(),
         ));
       }
       // notify the listeners
@@ -53,46 +54,77 @@ class ElectricBills with ChangeNotifier {
       if (kDebugMode) {
         print(err);
       }
+      rethrow;
     }
   }
 
   // Add electric bill data
-  Future<void> addElectricBill() async {
-    if (kDebugMode) {
-      print('add an ebill');
+  Future<int> addElectricBill(Object obj) async {
+    _clearElectricBills();
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl")}/electric-bills/store');
+
+      final response = await http.post(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
+      _httpResponseStatus = response.statusCode;
+
+      // notify the listeners
+      notifyListeners();
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
     }
-    return;
+    return _httpResponseStatus;
   }
 
   // Show single electric bill
   ElectricBill showElectricBill(String id) {
-    if (kDebugMode) {
-      print('showEbill');
-      print(id);
-    }
     return _electricBills.firstWhere((element) => element.id == id);
   }
 
   // Update electric bill's data
-  Future<void> updateElectricbill(String id) async {
+  Future<int> updateElectricBill(String id, Object obj) async {
     if (kDebugMode) {
       print('update E bill');
+      print(obj);
     }
-    if (kDebugMode) {
-      print(id);
+    try {
+      var url = Uri.parse(
+          '${dotenv.get("serverUrl")}/electric-bills/update/$id');
+      final response = await http.put(url, body: jsonEncode(obj), headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": SetServerHeaders.basicAuthHeaders(),
+      });
+      _clearElectricBills();
+      _httpResponseStatus = response.statusCode;
+    } catch (err) {
+      rethrow;
     }
-    return;
+    return _httpResponseStatus;
   }
 
   // Delete electric bill's data
-  Future<void> deleteElectricBill(String id) async {
+  Future<int> deleteElectricBill(String id) async {
     if (kDebugMode) {
       print(id);
     }
-    return;
+    return 0;
   }
 
   List<ElectricBill> get electricBills {
-    return [..._electricBills];
+    List.from(Set.from(_electricBills));
+    List<ElectricBill> _electricBillsReversed = _electricBills.reversed.toList();
+
+    return [..._electricBillsReversed];
+  }
+
+  void _clearElectricBills() {
+    _electricBills.clear();
   }
 }

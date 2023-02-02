@@ -5,12 +5,14 @@ class ElectricBill {
   String? title;
   String? unitNow;
   String? unitPrev;
-  String? rate;
+  String? unitRate;
   String? amount;
   String? charge;
   String? due;
   String? advance;
-  //DateTime? paidDate;
+  String? paidDate;
+  String? imageUrl;
+  String? fileUrl;
 
   ElectricBill({
     required this.id,
@@ -19,11 +21,13 @@ class ElectricBill {
     required this.title,
     required this.unitNow,
     required this.unitPrev,
-    required this.rate,
+    required this.unitRate,
     required this.amount,
     required this.charge,
     required this.due,
     required this.advance,
-   // required this.paidDate,
+    required this.paidDate,
+    required this.imageUrl,
+    required this.fileUrl,
   });
 }

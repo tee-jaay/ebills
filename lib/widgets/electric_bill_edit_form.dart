@@ -4,32 +4,59 @@ import 'package:flutter/material.dart';
 import 'center_progress.dart';
 import '../settings/constants.dart';
 import '../providers/electric_bills.dart';
-import '../screens/electric_bill/electric_bill_list_screen.dart';
+import '../screens/electric_bill/electric_bill_details_screen.dart';
 import 'show_snack_bar_msg.dart';
 
-class ElectricBillAddForm extends StatefulWidget {
-  const ElectricBillAddForm({Key? key}) : super(key: key);
+class ElectricBillEditForm extends StatefulWidget {
+  final String id;
+  final String? title;
+  final String? name;
+  final String? collectorName;
+  final String? unitNow;
+  final String? unitPrev;
+  final String? unitRate;
+  final String? amount;
+  final String? charge;
+  final String? due;
+  final String? advance;
+  final String? paidDate;
+
+  const ElectricBillEditForm({
+    required this.title,
+    required this.name,
+    required this.collectorName,
+    required this.unitNow,
+    required this.unitPrev,
+    required this.unitRate,
+    required this.amount,
+    required this.charge,
+    required this.due,
+    required this.advance,
+    required this.paidDate,
+    required this.id,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<ElectricBillAddForm> createState() => _ElectricBillAddFormState();
+  State<ElectricBillEditForm> createState() => _ElectricBillEditFormState();
 }
 
-class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
+class _ElectricBillEditFormState extends State<ElectricBillEditForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _isLoading = false;
 
-  late String _title = '';
-  late String _name = '';
-  late String _collectorName = '';
-  late num _unitNow = 0;
-  late num _unitPrev = 0;
-  late double _unitRate = 0.0;
-  late double _amount = 0.0;
-  late double _charge = 0.0;
-  late double _due = 0.0;
-  late double _advance = 0.0;
-  late String _paidDate = '';
+  late String? _title = widget.title;
+  late String? _name = widget.title;
+  late String? _collectorName = widget.collectorName;
+  late String? _unitNow = widget.unitNow;
+  late String? _unitPrev = widget.unitPrev;
+  late String? _unitRate = widget.unitRate;
+  late String? _amount = widget.amount;
+  late String? _charge = widget.charge;
+  late String? _due = widget.due;
+  late String? _advance = widget.advance;
+  late String? _paidDate = widget.paidDate;
 
   final _nameFocusNode = FocusNode();
   final _unitNowFocusNode = FocusNode();
@@ -43,7 +70,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
   final _paidDateFocusNode = FocusNode();
 
   void _handleSubmit() {
-    dynamic newElectricBill = {
+    dynamic selectedElectricBill = {
       "title": _title,
       "name": _name,
       "unitNow": _unitNow,
@@ -55,16 +82,17 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
       "advance": _advance,
       "collectorName": _collectorName,
       "paidDate": _paidDate,
-      "fileUrl": "",
-      "imageUrl": "",
     };
 
     ElectricBills electricBills = ElectricBills();
-    electricBills.addElectricBill(newElectricBill).then((value) {
-      if (value == 201) {
+    electricBills
+        .updateElectricBill(widget.id, selectedElectricBill)
+        .then((value) {
+      if (value == 200) {
         ShowSnackBarMsg.showSnackBarMsg(
-            context, 'Add success', Colors.green);
-        Navigator.pushNamed(context, ElectricBillListScreen.routeName);
+            context, 'Update success', Colors.green);
+        Navigator.pushNamed(context, ElectricBillDetailsScreen.routeName,
+            arguments: widget.id);
       } else {
         if (kDebugMode) {
           print('Adding error occurred');
@@ -88,7 +116,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                   children: [
                     // --- Title
                     TextFormField(
-                      initialValue: '2022 Dec',
+                      initialValue: widget.title,
                       decoration: const InputDecoration(
                         labelText: 'Title',
                         icon: Icon(Icons.text_format),
@@ -105,7 +133,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // --- Payer name
                     TextFormField(
-                      initialValue: 'Jhon Doe',
+                      initialValue: widget.name,
                       decoration: const InputDecoration(
                         labelText: 'Payer Name',
                         icon: Icon(Icons.person),
@@ -129,7 +157,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit previous
                     TextFormField(
-                      initialValue: '24567',
+                      initialValue: widget.unitPrev,
                       decoration: const InputDecoration(
                         labelText: 'Unit Previous',
                         icon: Icon(Icons.ac_unit),
@@ -144,7 +172,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitPrev = num.parse(value);
+                          _unitPrev = value;
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -154,7 +182,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit now
                     TextFormField(
-                      initialValue: '26733',
+                      initialValue: widget.unitNow,
                       decoration: const InputDecoration(
                         labelText: 'Unit Now',
                         icon: Icon(Icons.ad_units),
@@ -169,7 +197,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitNow = num.parse(value);
+                          _unitNow = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -179,7 +207,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Unit rate
                     TextFormField(
-                      initialValue: '7.5',
+                      initialValue: widget.unitRate,
                       decoration: const InputDecoration(
                         labelText: 'Rate',
                         icon: Icon(Icons.currency_bitcoin),
@@ -195,7 +223,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _unitRate = double.parse(value);
+                          _unitRate = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -205,7 +233,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Due
                     TextFormField(
-                      initialValue: '765.00',
+                      initialValue: widget.due,
                       decoration: const InputDecoration(
                         labelText: 'Due',
                         icon: Icon(Icons.memory),
@@ -221,7 +249,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _due = double.parse(value);
+                          _due = value;
                         });
                       },
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -231,7 +259,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Advance
                     TextFormField(
-                      initialValue: '1000.00',
+                      initialValue: widget.advance,
                       decoration: const InputDecoration(
                         labelText: 'Advance',
                         icon: Icon(Icons.money),
@@ -247,7 +275,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _advance = double.parse(value);
+                          _advance = value;
                         });
                       },
                       onFieldSubmitted: (_) =>
@@ -257,7 +285,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Charge
                     TextFormField(
-                      initialValue: '20.00',
+                      initialValue: widget.charge,
                       decoration: const InputDecoration(
                         labelText: 'Charge',
                         icon: Icon(Icons.power),
@@ -273,7 +301,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _charge = double.parse(value);
+                          _charge = value;
                         });
                       },
                       onFieldSubmitted: (_) {
@@ -284,7 +312,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Amount
                     TextFormField(
-                      initialValue: '1432.00',
+                      initialValue: widget.amount,
                       decoration: const InputDecoration(
                         labelText: 'Amount',
                         icon: Icon(Icons.adb),
@@ -300,7 +328,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          _amount = double.parse(value);
+                          _amount = value;
                         });
                       },
                       onFieldSubmitted: (_) {
@@ -312,7 +340,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Collector name
                     TextFormField(
-                      initialValue: 'Maria Doe',
+                      initialValue: widget.collectorName,
                       decoration: const InputDecoration(
                         labelText: 'Collector\'s Name',
                         icon: Icon(Icons.woman),
@@ -337,7 +365,7 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
 
                     // -- Paid date
                     TextFormField(
-                      initialValue: '11-12-2022',
+                      initialValue: widget.paidDate,
                       decoration: const InputDecoration(
                         labelText: 'Paid Date',
                         icon: Icon(Icons.calendar_month),
@@ -370,7 +398,14 @@ class _ElectricBillAddFormState extends State<ElectricBillAddForm> {
                           _handleSubmit();
                         }
                       },
-                      child: const Text('Submit'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.green,
+                        ),
+                      ),
+                      child: const Text(
+                        'Update',
+                      ),
                     ),
                   ],
                 ),
