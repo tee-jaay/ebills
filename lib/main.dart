@@ -11,7 +11,11 @@ import 'screens/electric_bill/electric_bill_list_screen.dart';
 import 'screens/auth/sign_in_screen.dart';
 
 void main() async {
-  await dotenv.load(fileName: "assets/.env");
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print('Error loading environment variables: $e');
+  }
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const AppRoot());
 }
